@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Server">
+      <UniqueIdentifier>{7ab03c83-2b48-4fb5-b7e0-7674151d6d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{e106d591-4627-405c-8479-5b3412ebdaa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{5c24dd14-f7d6-4057-91bd-fcb5e08ed786}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientCommand.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientInfo.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync_queue.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="throw.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MachiavelliServer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="throw.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
