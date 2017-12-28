@@ -11,11 +11,8 @@ using namespace std;
 int main()
 {
 
-	std::cout << "TEST" << std::endl;
-
 	Server* server = new Server();
 	server->init();
-
 	delete server;
 
 	return _CrtDumpMemoryLeaks();

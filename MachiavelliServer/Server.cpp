@@ -22,8 +22,9 @@ void Server::consume_command() // runs in its own thread
                 auto &client = clientInfo->get_socket();
                 auto &player = clientInfo->get_player();
                 try {
-                    // TODO handle command here
-                    client << player.get_name() << ", you wrote: '" << command.get_cmd() << "', but I'll ignore that for now.\r\n" << prompt;
+
+					commandHandler.handle(clientInfo, command.get_cmd());
+
                 } catch (const exception& ex) {
                     cerr << "*** exception in consumer thread for player " << player.get_name() << ": " << ex.what() << '\n';
                     if (client.is_open()) {
@@ -45,7 +46,7 @@ void Server::consume_command() // runs in its own thread
 std::shared_ptr<ClientInfo> Server::init_client_session(Socket client) {
     client.write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
     client.write("What's your name?\r\n");
-    client.write(prompt);
+    client.write(commandHandler.getPrompt());
     string name;
     bool done { false };
     while(!done) {
@@ -62,7 +63,8 @@ void Server::handle_client(Socket client) // this function runs in a separate th
         auto client_info = init_client_session(move(client));
         auto &socket = client_info->get_socket();
         auto &player = client_info->get_player();
-        socket << "Welcome, " << player.get_name() << ", have fun playing our game!\r\n" << prompt;
+        socket << "Welcome, " << player.get_name() << ", have fun playing our game!\r\n";
+		commandHandler.prompt(socket);
 
         while (running) { // game loop
             try {
@@ -73,6 +75,7 @@ void Server::handle_client(Socket client) // this function runs in a separate th
 
                     if (cmd == "quit") {
                         socket.write("Bye!\r\n");
+						commandHandler.handle(client_info, cmd);
                         break; // out of game loop, will end this thread and close connection
                     }
                     else if (cmd == "quit_server") {
@@ -83,7 +86,15 @@ void Server::handle_client(Socket client) // this function runs in a separate th
                     queue.put(command);
                 };
 
-            } catch (const exception& ex) {
+				if (player.hasMessage()) {
+					socket <<"\r\n";
+					socket << player.getMessage() << "\r\n";
+					player.messageRecieved();
+
+					commandHandler.prompt(socket);
+				}
+			
+			} catch (const exception& ex) {
                 socket << "ERROR: " << ex.what() << "\r\n";
             } catch (...) {
                 socket.write("ERROR: something went wrong during handling of your request. Sorry!\r\n");

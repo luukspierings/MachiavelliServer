@@ -13,6 +13,7 @@ using namespace std;
 #include "ClientCommand.h"
 #include "Player.h"
 #include "ClientInfo.h"
+#include "CommandHandler.h"
 
 class Server {
 
@@ -32,9 +33,9 @@ private:
 	bool running = true;
 
 	Sync_queue<ClientCommand> queue;
+	CommandHandler commandHandler;
 
 	const int tcp_port{ 1080 };
-	const string prompt{ "machiavelli> " };
 
 
 };

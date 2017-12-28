@@ -22,8 +22,10 @@ public:
         : _socket{std::move(socket)}, _player{std::move(player)} {}
     Socket& get_socket() { return _socket; }
     const Socket& get_socket() const { return _socket; }
+
     Player& get_player() { return _player; }
     const Player& get_player() const { return _player; }
+
 };
 
 #endif
