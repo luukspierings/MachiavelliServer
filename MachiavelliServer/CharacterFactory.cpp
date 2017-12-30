@@ -3,12 +3,11 @@
 
 vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 {
-
 	vector<unique_ptr<Character>> characters {};
 
+	FileHandler fileHandler{ "karakterkaarten.csv" };
 	vector<vector<string>> data = fileHandler.getValues();
 
-	// TODO: change order of characters by first value.
 	for (auto row : data) {
 		if (row[1] == "Moordenaar") characters.push_back(make_unique<Assassin>());
 		if (row[1] == "Dief") characters.push_back(make_unique<Robber>());

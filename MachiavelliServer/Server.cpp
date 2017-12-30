@@ -86,13 +86,18 @@ void Server::handle_client(Socket client) // this function runs in a separate th
                     queue.put(command);
                 };
 
-				if (player.hasMessage()) {
-					socket <<"\r\n";
-					socket << player.getMessage() << "\r\n";
-					player.messageRecieved();
-
+				if (player.hasMessages()) {
+					socket << "\r\n";
+					while (player.hasMessages()) {
+						vector<string> messages = player.getMessages();
+						for (auto msg : messages) {
+							socket << msg << "\r\n";
+						}
+					}
+					socket << "\r\n";
 					commandHandler.prompt(socket);
 				}
+
 			
 			} catch (const exception& ex) {
                 socket << "ERROR: " << ex.what() << "\r\n";

@@ -7,44 +7,37 @@ void CommandHandler::handle(shared_ptr<ClientInfo> client, string command) {
 	auto& socket = client->get_socket();
 	auto& player = client->get_player();
 
-
 	if (command == "quit") {
-
 		game.removeClient(*client);
-
 		return;
 	}
 
 
 	if (player.isWaiting()) {
-		socket << "Please have patience, it is not your turn yet.\r\n";
+		player.notify("Please have patience, it is not your turn yet.");
 	} 
+	else if (game.hasState()) {
+
+		game.getCurrentState().processState(game, player, command);
+
+	}
 	else {
 		if (command == "join") {
-
 			game.addClient(client);
-
-			socket << "You successfully joined a game.\r\n";
-			
-			int clientAmount = game.getClientsAmount();
-			socket << "The game currently consists of you and " << clientAmount - 1 << " other players.\r\n";
-			socket << "Please wait for the game to start...\r\n";
-
-			player.setWaiting(true);
-
 		}
 		else if (command == "help" || command == "h") {
-			socket << "-- Valid commands --\r\n";
-			socket << "join: Join a game.\r\n";
-			socket << "help: Shows this help page\r\n";
-			socket << "quit: Quits the game / connection\r\n";
+
+			player.notify("-- Valid commands --");
+			player.notify("join: Join a game.");
+			player.notify("help: Shows this help page.");
+			player.notify("quit: Quits the game / connection.");
+
 		}
 		else {
-			socket << "'" << command << "' is not a valid command.\r\n";
+			player.notify("'" + command + "' is not a valid command.");
 		}
 	}
 
-	prompt(socket);
 }
 
 const string CommandHandler::getPrompt()

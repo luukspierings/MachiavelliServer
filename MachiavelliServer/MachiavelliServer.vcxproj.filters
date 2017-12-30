@@ -16,6 +16,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{ba9931c5-d87e-47a3-a150-43cefd3ad4e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Other states">
+      <UniqueIdentifier>{f92c2932-d744-47c8-a14d-0512eaca64a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -34,9 +37,6 @@
       <Filter>Server</Filter>
     </ClInclude>
     <ClInclude Include="ClientInfo.h">
-      <Filter>Server</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>Server</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
@@ -105,6 +105,12 @@
     <ClInclude Include="State.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="ChooseCharacter.h">
+      <Filter>Game\Other states</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MachiavelliServer.cpp">
@@ -112,9 +118,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Server</Filter>
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>Server</Filter>
@@ -145,6 +148,15 @@
     </ClCompile>
     <ClCompile Include="CharacterFactory.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingFactory.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ChooseCharacter.cpp">
+      <Filter>Game\Other states</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

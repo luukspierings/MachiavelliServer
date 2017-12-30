@@ -27,7 +27,6 @@ public:
 
 private:
 
-	FileHandler fileHandler{ "karakterkaarten.csv" };
 
 
 

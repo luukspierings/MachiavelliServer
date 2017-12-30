@@ -1,20 +1,32 @@
 #pragma once
 
+#include <string>
+
 #include "CardColor.h"
 
+
+using namespace std;
 
 class Building
 {
 public:
-	Building();
-	~Building();
+	Building(string name, int points, CardColor color) : 
+		name(name), 
+		points(points), 
+		cost(points), 
+		color(color) {};
 
-
+	string getName() const { return name; }
+	int getCost() const { return cost; }
+	int getPoints() const { return points; }
+	CardColor getColor() const { return color; }
 
 private:
 
+	string name;
+
 	int points;
-	int coins;
+	int cost;
 
 	CardColor color;
 
