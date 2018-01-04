@@ -177,6 +177,7 @@
     <ClInclude Include="throw.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assassin.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="BuildingFactory.cpp" />
     <ClCompile Include="Character.cpp" />

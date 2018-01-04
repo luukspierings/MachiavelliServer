@@ -15,15 +15,13 @@ class CommandHandler
 public:
 
 	void handle(shared_ptr<ClientInfo> client, string command);
-	const string getPrompt();
-	void prompt(Socket& client);
+
 
 
 private:
 
 	Game game;
 
-	const string promptText{ "machiavelli> " };
 
 
 

@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "CharacterFactory.h"
 
+#include "Assassin.h"
+#include "Builder.h"
+#include "Condottiere.h"
+#include "King.h"
+#include "Mage.h"
+#include "Merchant.h"
+#include "Preacher.h"
+#include "Robber.h"
+
 vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 {
 	vector<unique_ptr<Character>> characters {};

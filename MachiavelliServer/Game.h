@@ -23,15 +23,11 @@ class Game
 public:
 
 	Game() {
-	
-		characters = characterFactory.getCharacters();
-		setCharacterOrder();
+		resetCharacters();
 
 		buildings = buildingFactory.getBuildings();
 		shuffleBuildings();
-
 	};
-	~Game() {};
 
 	void addClient(shared_ptr<ClientInfo> client);
 	void removeClient(ClientInfo& client);
@@ -39,8 +35,11 @@ public:
 
 	Player& otherPlayer(Player& player);
 
-	void setCharacterOrder();
+	vector<string> getCharacterOrder() const { return characterOrder; };
+
 	void shuffleBuildings();
+	unique_ptr<Building> getBuilding();
+	void returnBuilding(unique_ptr<Building> building);
 
 	auto charactersBegin() { return characters.begin(); }
 	auto charactersEnd() { return characters.end(); }
@@ -50,26 +49,35 @@ public:
 	State& getCurrentState() { return *currentState; };
 
 	void start();
+	void startRound();
+	void endRound();
 
 	void callNextCharacter(string lastCharacter = "");
+	void resetCharacters();
 
-
-	void notifyAllPlayers(string message);
+	void notifyAllPlayers(string message = "");
+	void allPrompt();
 
 
 private:
+
+	vector<shared_ptr<ClientInfo>> clients;
+	weak_ptr<ClientInfo> firstWon;
+
 
 	CharacterFactory characterFactory;
 	BuildingFactory buildingFactory;
 
 	vector<unique_ptr<Building>> buildings;
+	vector<unique_ptr<Building>> returnedBuildings;
+
 	vector<unique_ptr<Character>> characters;
 	vector<string> characterOrder;
 
 	unique_ptr<State> currentState;
 
 
-	vector<shared_ptr<ClientInfo>> clients;
+
 
 };
 

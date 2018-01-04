@@ -5,14 +5,6 @@
 
 #include "Character.h"
 
-#include "Assassin.h"
-#include "Builder.h"
-#include "Condottiere.h"
-#include "King.h"
-#include "Mage.h"
-#include "Merchant.h"
-#include "Preacher.h"
-#include "Robber.h"
 #include "FileHandler.h"
 
 using namespace std;

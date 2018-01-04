@@ -27,7 +27,7 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 
 		auto& otherPlayer = game.otherPlayer(player);
 
-		otherPlayer.notify("\r\nAll characters have been chosen, the next round is now starting.");
+		otherPlayer.notify("All characters have been chosen, the next round is now starting.");
 		player.notify("All characters have been chosen, the next round is now starting.");
 
 		game.callNextCharacter();
@@ -35,7 +35,6 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 	}
 	else if (choseCharacter && choosingHand) {
 		choosingHand = false;
-		printOptions(game, player);
 	}
 	else if (choseCharacter) {
 
@@ -45,7 +44,7 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 
 		player.notify("It is now " + newPlayer.get_name() + "'s turn to pick and throw away characters.");
 
-		newPlayer.notify("\r\n" + player.get_name() + " picked his characters, it is now your turn to pick and throw away characters.");
+		newPlayer.notify(player.get_name() + " picked his characters, it is now your turn to pick and throw away characters.");
 
 		choosingHand = true;
 		printOptions(game, newPlayer);
@@ -53,7 +52,6 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 	}
 	else {
 		player.notify("'" + command + "' is not a character you can pick.");
-		printOptions(game, player);
 	}
 }
 

@@ -44,9 +44,9 @@ void Server::consume_command() // runs in its own thread
 }
 
 std::shared_ptr<ClientInfo> Server::init_client_session(Socket client) {
-    client.write("Welcome to Server 1.0! To quit, type 'quit'.\r\n");
+    client.write("Welcome to Machiabelli!\r\n");
     client.write("What's your name?\r\n");
-    client.write(commandHandler.getPrompt());
+    client.write("> ");
     string name;
     bool done { false };
     while(!done) {
@@ -63,8 +63,9 @@ void Server::handle_client(Socket client) // this function runs in a separate th
         auto client_info = init_client_session(move(client));
         auto &socket = client_info->get_socket();
         auto &player = client_info->get_player();
-        socket << "Welcome, " << player.get_name() << ", have fun playing our game!\r\n";
-		commandHandler.prompt(socket);
+		player.notify("Welcome, " + player.get_name() + ", have fun playing our game!");
+		player.notify("Type 'help' to see all the possible commands.");
+		player.prompt();
 
         while (running) { // game loop
             try {
@@ -85,18 +86,15 @@ void Server::handle_client(Socket client) // this function runs in a separate th
                     ClientCommand command {cmd, client_info};
                     queue.put(command);
                 };
-
 				if (player.hasMessages()) {
-					socket << "\r\n";
 					while (player.hasMessages()) {
 						vector<string> messages = player.getMessages();
 						for (auto msg : messages) {
-							socket << msg << "\r\n";
+							socket << msg;
 						}
 					}
-					socket << "\r\n";
-					commandHandler.prompt(socket);
 				}
+				
 
 			
 			} catch (const exception& ex) {

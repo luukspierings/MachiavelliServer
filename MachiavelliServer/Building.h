@@ -21,6 +21,11 @@ public:
 	int getPoints() const { return points; }
 	CardColor getColor() const { return color; }
 
+	string getPrint();
+
+
+
+
 private:
 
 	string name;
@@ -30,6 +35,6 @@ private:
 
 	CardColor color;
 
-
+	string cardColorToString();
 };
 

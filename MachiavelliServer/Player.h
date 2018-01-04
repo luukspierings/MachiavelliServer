@@ -10,7 +10,6 @@
 
 #include <string>
 #include <vector>
-#include <mutex>
 #include <memory>
 
 #include "Character.h"
@@ -22,12 +21,7 @@ class Player {
 public:
     Player() {}
 	Player(const string& name) : name{ name } {}
-	Player(const Player& player) {
-		name = player.name;
-		coins = player.coins;
-		recievingMessage = player.recievingMessage;
-		waiting = player.waiting;
-	}
+	//Player(const Player& player);
 
     string get_name() const { return name; }
     void set_name(const string& new_name) { name = new_name; }
@@ -35,7 +29,9 @@ public:
 	bool hasMessages();
 	vector<string> getMessages();
 
-	void notify(string message);
+	void notify(string message = "");
+	void write(string message = "");
+	void prompt();
 
 	bool isWaiting() const { return waiting; }
 	void setWaiting(bool setWait) { waiting = setWait; }
@@ -50,19 +46,30 @@ public:
 	void putBuilding(unique_ptr<Building> building);
 	void buyBuilding(string buildingName);
 
-	auto charactersBegin() const { return characters.begin(); }
-	auto charactersEnd() const { return characters.end(); }
+	auto charactersBegin() { return characters.begin(); }
+	auto charactersEnd() { return characters.end(); }
 
 	auto handBuildingsBegin() const { return handBuildings.begin(); }
 	auto handBuildingsEnd() const { return handBuildings.end(); }
 
 	auto stackBuildingsBegin() const { return stackBuildings.begin(); }
 	auto stackBuildingsEnd() const { return stackBuildings.end(); }
+	int stackBuildingsAmount() const { return stackBuildings.size(); }
+
+	int getCoins() const { return coins; }
+	void earnCoins(int earning) { if (earning > 0) { coins += earning; } }
+
+	int countPoints() const;
+	int countBuildingPoints() const;
+
+	void resetRound();
+
+	bool isFinished() const;
 
 private:
     string name;
-	vector<string> recievingMessage{};
-	mutex lock;
+	vector<string> messageQueue{};
+	vector<string> messages{};
 
 	int coins = 0;
 	bool king = false;
@@ -71,7 +78,6 @@ private:
 	vector<unique_ptr<Building>> stackBuildings;
 
 	bool waiting = false;
-
 
 };
 

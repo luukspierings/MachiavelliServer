@@ -158,6 +158,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Server</Filter>
     </ClCompile>
+    <ClCompile Include="Assassin.cpp">
+      <Filter>Game\Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Bouwkaarten.csv">

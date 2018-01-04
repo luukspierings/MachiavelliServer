@@ -5,7 +5,7 @@ void Game::addClient(shared_ptr<ClientInfo> client)
 {
 	auto &player = client->get_player();
 
-	notifyAllPlayers("\r\nPlayer '" + player.get_name() + "' has joined the game.");
+	notifyAllPlayers("Player '" + player.get_name() + "' has joined the game.");
 	
 	clients.push_back(client);
 	player.setWaiting(true);
@@ -29,6 +29,13 @@ void Game::notifyAllPlayers(string message)
 	}
 }
 
+void Game::allPrompt()
+{
+	for (auto& otherClient : clients) {
+		otherClient->get_player().prompt();
+	}
+}
+
 void Game::removeClient(ClientInfo & client)
 {
 	for (auto it = clients.begin(); it != clients.end();)
@@ -45,9 +52,10 @@ void Game::removeClient(ClientInfo & client)
 
 Player & Game::otherPlayer(Player & player)
 {
-	for (auto& client : clients) {
+	for (auto client : clients) {
 		if (&client->get_player() != &player) return client->get_player();
 	}
+	return player;
 }
 
 void Game::shuffleBuildings()
@@ -57,34 +65,165 @@ void Game::shuffleBuildings()
 	std::shuffle(buildings.begin(), buildings.end(), std::default_random_engine{});
 }
 
-void Game::setCharacterOrder()
+unique_ptr<Building> Game::getBuilding()
 {
-	characterOrder.clear();
+	unique_ptr<Building> buf;
 
-	for (auto & c : characterFactory.getCharacters()) {
-		characterOrder.push_back(c->getName());
+	if (buildings.begin() == buildings.end()) {
+		swap(buildings, returnedBuildings);
+		shuffleBuildings();
 	}
+	buf = move(buildings.back());
+	buildings.pop_back();
 
+	return buf;
 }
+
+void Game::returnBuilding(unique_ptr<Building> building)
+{
+	returnedBuildings.push_back(move(building));
+}
+
 
 void Game::start()
 {
 	notifyAllPlayers("Let the game begin, and may the best win.");
 
+	// start with 2 coins and 3 buildings
+	for (auto & client : clients) {
+		auto &player = client->get_player();
+
+		player.earnCoins(2);
+		
+		player.putBuilding(move(getBuilding()));
+		player.putBuilding(move(getBuilding()));
+		player.putBuilding(move(getBuilding()));
+	}
+
 	int firstKing = RandomGenerator::getInstance().generate(0, static_cast<int>(clients.size())-1);
 	
 	auto &king = clients[firstKing]->get_player();
 	king.setKing(true);
-	king.notify("\r\nYou are declared king!");
 
+	notifyAllPlayers(king.get_name() + " is randomly chosen king!");
+
+	startRound();
+}
+
+void Game::startRound()
+{
+	resetCharacters();
 	currentState = make_unique<ChooseCharacter>();
 
-	currentState->printOptions(*this, king);
-	king.setWaiting(false);
+	for (auto & client : clients) {
+		auto &player = client->get_player();
+		player.resetRound();
+		if (player.isKing()) {
+			notifyAllPlayers();
+			notifyAllPlayers("King " + player.get_name() + " starts this round!");
+			currentState->printOptions(*this, player);
+		}
+	}
+
+}
+
+void Game::endRound()
+{	
+	bool roundOver = false;
+
+	int mostPoints = 0;
+	vector<shared_ptr<ClientInfo>> mostPointsClients;
+
+	notifyAllPlayers("");
+
+	for (auto & client : clients) {
+		auto &player = client->get_player();
+
+		int points = player.countPoints();
+
+		// (first) win points
+		if (player.isFinished()) {
+			roundOver = true;
+
+			// Player won first
+			if (&player == &(firstWon.lock())->get_player()) {
+				points += 4;
+			} // player won second
+			else {
+				points += 2;
+			}
+		}
+
+		// put players with most points in a list
+		if (points == mostPoints) mostPointsClients.push_back(client);
+		else if (points > mostPoints) {
+			mostPoints = points;
+			mostPointsClients.clear();
+			mostPointsClients.push_back(client);
+		}
+
+		notifyAllPlayers(player.get_name() + " currently has " + to_string(points) + " points");
+	}
+
+	if (roundOver) {
+
+		if (mostPointsClients.size() == 1) {
+			auto &player = mostPointsClients[0]->get_player();
+			notifyAllPlayers("");
+			notifyAllPlayers(player.get_name() + " has " + to_string(player.stackBuildingsAmount()) + " buildings and wins!");
+		}
+		else {
+			mostPoints = 0;
+			vector<shared_ptr<ClientInfo>> drawClients;
+
+
+			for (auto & client : mostPointsClients) {
+				auto &player = client->get_player();
+
+				int points = player.countBuildingPoints();
+
+				// put players with most points in a list
+				if (points == mostPoints) drawClients.push_back(client);
+				else if (points > mostPoints) {
+					mostPoints = points;
+					drawClients.clear();
+					drawClients.push_back(client);
+				}
+			}
+
+			if (drawClients.size() == 1) {
+
+				auto &player = drawClients[0]->get_player();
+				notifyAllPlayers("");
+				notifyAllPlayers(player.get_name() + " has " + to_string(player.stackBuildingsAmount()) + " buildings and wins!");
+
+			}
+			else {
+
+				notifyAllPlayers("It's a draw!");
+
+			}
+
+		}
+
+		notifyAllPlayers("");
+		notifyAllPlayers("Thanks for playing!");
+		notifyAllPlayers("This game was made by Luuk Spierings and Jonathan Immink.");
+	}
+	else {
+
+		startRound();
+	}
 }
 
 void Game::callNextCharacter(string lastCharacter)
 {
+	for (auto & client : clients) {
+		if (client->get_player().isFinished() && !firstWon.lock()) {
+			firstWon = client;
+		}
+	}
+
 	string newCharacter = "";
 	if (lastCharacter == "") {
 		if (characterOrder.size() > 0) newCharacter = characterOrder[0];
@@ -107,9 +246,10 @@ void Game::callNextCharacter(string lastCharacter)
 
 				auto &player = client->get_player();
 
-				notifyAllPlayers("The " + newCharacter + " is called forward: " + player.get_name() + " has the character.");
+				notifyAllPlayers("The " + newCharacter + " is called forward: " + player.get_name() + " is stepping forward.");
 
 				currentState = player.pullCharacter(newCharacter);
+				currentState->printOverview(*this, player);
 				currentState->printOptions(*this, player);
 
 				player.setWaiting(false);
@@ -119,16 +259,27 @@ void Game::callNextCharacter(string lastCharacter)
 			}
 		}
 
-		notifyAllPlayers("The " + newCharacter + " is called forward: nobody has the character.");
+		notifyAllPlayers("The " + newCharacter + " is called forward: only silence returns.");
 
 		callNextCharacter(newCharacter);
 
 	}
 	else {
-		// Done all characters
+		// all characters have been called.
+		notifyAllPlayers("All the characters have been called.");
 
-		notifyAllPlayers("All the characters have been called. The round begins again soon.");
+		endRound();
+	}
 
+}
+
+void Game::resetCharacters()
+{
+	characters = characterFactory.getCharacters();
+
+	characterOrder.clear();
+	for (auto & c : characters) {
+		characterOrder.push_back(c->getName());
 	}
 
 }

@@ -11,10 +11,9 @@ using namespace std;
 int main()
 {
 
-	{
-		Server server;
-		server.init();
-	}
+	Server* server = new Server();
+	server->init();
+	delete server;
 
 	return _CrtDumpMemoryLeaks();
 }
