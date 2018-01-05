@@ -47,8 +47,6 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 		newPlayer.notify(player.get_name() + " picked his characters, it is now your turn to pick and throw away characters.");
 
 		choosingHand = true;
-		printOptions(game, newPlayer);
-
 	}
 	else {
 		player.notify("'" + command + "' is not a character you can pick.");

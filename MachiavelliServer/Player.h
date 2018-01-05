@@ -19,9 +19,8 @@ using namespace std;
 
 class Player {
 public:
-    Player() {}
-	Player(const string& name) : name{ name } {}
-	//Player(const Player& player);
+	Player() { reset(); }
+	Player(const string& name) : name{ name } { reset(); }
 
     string get_name() const { return name; }
     void set_name(const string& new_name) { name = new_name; }
@@ -44,13 +43,16 @@ public:
 	unique_ptr<Character> pullCharacter(string characterName);
 
 	void putBuilding(unique_ptr<Building> building);
+	unique_ptr<Building> pullBuilding(string buildingName);
 	void buyBuilding(string buildingName);
+	unique_ptr<Building> destroyBuilding(string buildingName);
 
 	auto charactersBegin() { return characters.begin(); }
 	auto charactersEnd() { return characters.end(); }
 
 	auto handBuildingsBegin() const { return handBuildings.begin(); }
 	auto handBuildingsEnd() const { return handBuildings.end(); }
+	int handBuildingsAmount() const { return handBuildings.size(); }
 
 	auto stackBuildingsBegin() const { return stackBuildings.begin(); }
 	auto stackBuildingsEnd() const { return stackBuildings.end(); }
@@ -58,26 +60,34 @@ public:
 
 	int getCoins() const { return coins; }
 	void earnCoins(int earning) { if (earning > 0) { coins += earning; } }
+	int stealCoins() { int c = coins; coins = 0; return c; }
+	void loseCoins(int losing) { if (losing > 0) { coins -= losing; } }
 
 	int countPoints() const;
 	int countBuildingPoints() const;
 
 	void resetRound();
+	void reset();
 
 	bool isFinished() const;
+
+	bool isPreached() const { return preached; }
+	void preach() { preached = true; }
 
 private:
     string name;
 	vector<string> messageQueue{};
 	vector<string> messages{};
 
-	int coins = 0;
-	bool king = false;
+	int coins;
+	bool king;
+	bool preached;
+
 	vector<unique_ptr<Character>> characters;
 	vector<unique_ptr<Building>> handBuildings;
 	vector<unique_ptr<Building>> stackBuildings;
 
-	bool waiting = false;
+	bool waiting;
 
 };
 

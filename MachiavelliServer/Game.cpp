@@ -5,6 +5,12 @@ void Game::addClient(shared_ptr<ClientInfo> client)
 {
 	auto &player = client->get_player();
 
+	if (clients.size() >= 2) {
+		player.notify("There are too much players in this game.");
+		player.notify("Please try joining later.");
+		return;
+	}
+
 	notifyAllPlayers("Player '" + player.get_name() + "' has joined the game.");
 	
 	clients.push_back(client);
@@ -48,6 +54,27 @@ void Game::removeClient(ClientInfo & client)
 			++it;
 		}
 	}
+
+	if (clients.size() < 2) {
+		for (auto it = clients.begin(); it != clients.end(); it = clients.begin())
+		{
+			auto &player = (*it)->get_player();
+			player.notify("The game doesn't have enough players to keep playing...");
+			player.notify("You win!");
+			player.prompt();
+			removeClient(*(*it));
+		}
+		finished = true;
+	}
+}
+
+bool Game::hasClient(ClientInfo & client)
+{
+	for (auto it = clients.begin(); it != clients.end();it++)
+	{
+		if ((*it)->get_socket().get_socket() == client.get_socket().get_socket()) return true;
+	}
+	return false;
 }
 
 Player & Game::otherPlayer(Player & player)
@@ -85,6 +112,16 @@ void Game::returnBuilding(unique_ptr<Building> building)
 }
 
 
+void Game::showState()
+{
+	for (auto & client : clients) {
+		auto &player = client->get_player();
+		if (!player.isWaiting() && hasState()) currentState->printOverview(*this, player);
+		if (!player.isWaiting() && hasState()) currentState->printOptions(*this, player);
+	}
+	allPrompt();
+}
+
 void Game::start()
 {
 	notifyAllPlayers("Let the game begin, and may the best win.");
@@ -121,7 +158,7 @@ void Game::startRound()
 		if (player.isKing()) {
 			notifyAllPlayers();
 			notifyAllPlayers("King " + player.get_name() + " starts this round!");
-			currentState->printOptions(*this, player);
+			player.notify();
 		}
 	}
 
@@ -176,7 +213,6 @@ void Game::endRound()
 			mostPoints = 0;
 			vector<shared_ptr<ClientInfo>> drawClients;
 
-
 			for (auto & client : mostPointsClients) {
 				auto &player = client->get_player();
 
@@ -192,26 +228,22 @@ void Game::endRound()
 			}
 
 			if (drawClients.size() == 1) {
-
 				auto &player = drawClients[0]->get_player();
 				notifyAllPlayers("");
 				notifyAllPlayers(player.get_name() + " has " + to_string(player.stackBuildingsAmount()) + " buildings and wins!");
-
 			}
 			else {
-
 				notifyAllPlayers("It's a draw!");
-
 			}
-
 		}
 
 		notifyAllPlayers("");
 		notifyAllPlayers("Thanks for playing!");
 		notifyAllPlayers("This game was made by Luuk Spierings and Jonathan Immink.");
+
+		finished = true;
 	}
 	else {
-
 		startRound();
 	}
 }
@@ -247,10 +279,11 @@ void Game::callNextCharacter(string lastCharacter)
 				auto &player = client->get_player();
 
 				notifyAllPlayers("The " + newCharacter + " is called forward: " + player.get_name() + " is stepping forward.");
+				player.notify();
 
-				currentState = player.pullCharacter(newCharacter);
-				currentState->printOverview(*this, player);
-				currentState->printOptions(*this, player);
+				auto newC = player.pullCharacter(newCharacter);
+				newC->startCharacter(*this, player);
+				currentState = move(newC);
 
 				player.setWaiting(false);
 				otherPlayer(player).setWaiting(true);

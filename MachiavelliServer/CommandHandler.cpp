@@ -4,6 +4,10 @@
 
 void CommandHandler::handle(shared_ptr<ClientInfo> client, string command) {
 
+	if (game.isFinished()) {
+		game = Game{};
+	}
+
 	auto& socket = client->get_socket();
 	auto& player = client->get_player();
 
@@ -17,23 +21,19 @@ void CommandHandler::handle(shared_ptr<ClientInfo> client, string command) {
 
 	player.notify("\u001B[2J");
 
-	if (player.isWaiting()) {
+	if (player.isWaiting() && game.hasClient(*client)) {
 		player.notify("Please have patience, it is not your turn yet.");
 		game.allPrompt();
 	} 
-	else if (game.hasState()) {
-
+	else if (game.hasState() && game.hasClient(*client)) {
 		game.getCurrentState().processState(game, player, command);
-		if (!player.isWaiting()) game.getCurrentState().printOverview(game, player);
-		if (!player.isWaiting()) game.getCurrentState().printOptions(game, player);
-		
-		game.allPrompt();
+		game.showState();
 	}
 	else {
 		if (command == "join") {
+			client->get_player().reset();
 			game.addClient(client);
-
-			game.allPrompt();
+			game.showState();
 		}
 		else if (command == "help" || command == "h") {
 

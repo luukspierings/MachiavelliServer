@@ -32,6 +32,7 @@ public:
 	void addClient(shared_ptr<ClientInfo> client);
 	void removeClient(ClientInfo& client);
 	int getClientsAmount() const { return static_cast<int>(clients.size()); }
+	bool hasClient(ClientInfo& client);
 
 	Player& otherPlayer(Player& player);
 
@@ -47,10 +48,12 @@ public:
 
 	bool hasState() { return (!!currentState); };
 	State& getCurrentState() { return *currentState; };
+	void showState();
 
 	void start();
 	void startRound();
 	void endRound();
+	bool isFinished() const { return finished; }
 
 	void callNextCharacter(string lastCharacter = "");
 	void resetCharacters();
@@ -58,8 +61,9 @@ public:
 	void notifyAllPlayers(string message = "");
 	void allPrompt();
 
-
 private:
+
+	bool finished = false;
 
 	vector<shared_ptr<ClientInfo>> clients;
 	weak_ptr<ClientInfo> firstWon;

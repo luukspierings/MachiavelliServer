@@ -21,11 +21,12 @@ public:
 	virtual void kill() { dead = true; };
 	bool isDead() const { return dead; };
 
-
 	virtual void steal() { stolen = true; };
+	bool isStolen() const { return stolen; };
 
 	string getName() const { return name; };
 
+	virtual void startCharacter(Game& game, Player& player);
 
 	virtual void printOptions(Game& game, Player& player) override;
 	virtual void processState(Game& game, Player& player, string command) override;
@@ -52,7 +53,8 @@ protected:
 	virtual void chooseBuildingOptions(Game & game, Player & player);
 
 	// choosing the building to build
-	bool performedBuilding = false;
+	int buildingsBuilt = 0;
+	int maxBuilding = 1;
 	bool choosingBuild = false;
 	virtual void buildOptions(Game & game, Player & player);
 

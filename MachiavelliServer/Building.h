@@ -18,6 +18,7 @@ public:
 
 	string getName() const { return name; }
 	int getCost() const { return cost; }
+	int getDestroyCost() const { return cost - 1; }
 	int getPoints() const { return points; }
 	CardColor getColor() const { return color; }
 

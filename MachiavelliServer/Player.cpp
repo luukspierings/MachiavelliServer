@@ -72,6 +72,19 @@ void Player::putBuilding(unique_ptr<Building> building)
 	handBuildings.push_back(move(building));
 }
 
+unique_ptr<Building> Player::pullBuilding(string buildingName)
+{
+	unique_ptr<Building> buf;
+	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
+		if ((*it)->getName() == buildingName) {
+			buf = move(*it);
+			handBuildings.erase(it);
+			break;
+		}
+	}
+	return buf;
+}
+
 void Player::buyBuilding(string buildingName)
 {
 	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
@@ -90,6 +103,19 @@ void Player::buyBuilding(string buildingName)
 			}
 		}
 	}
+}
+
+unique_ptr<Building> Player::destroyBuilding(string buildingName)
+{
+	unique_ptr<Building> buf;
+	for (auto it = stackBuildings.begin(); it != stackBuildings.end(); it++) {
+		if ((*it)->getName() == buildingName) {
+			buf = move(*it);
+			stackBuildings.erase(it);
+			break;
+		}
+	}
+	return buf;
 }
 
 int Player::countPoints() const
@@ -127,6 +153,18 @@ void Player::resetRound()
 {
 	characters.clear();
 	waiting = (!king);
+	preached = false;
+}
+
+void Player::reset()
+{
+	coins = 0;
+	king = false;
+	preached = false;
+	characters.clear();
+	handBuildings.clear();
+	stackBuildings.clear();
+	waiting = false;
 }
 
 bool Player::isFinished() const

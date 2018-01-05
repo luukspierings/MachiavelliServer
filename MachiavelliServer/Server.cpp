@@ -44,7 +44,7 @@ void Server::consume_command() // runs in its own thread
 }
 
 std::shared_ptr<ClientInfo> Server::init_client_session(Socket client) {
-    client.write("Welcome to Machiabelli!\r\n");
+    client.write("Welcome to Machiavelli!\r\n");
     client.write("What's your name?\r\n");
     client.write("> ");
     string name;
@@ -65,6 +65,7 @@ void Server::handle_client(Socket client) // this function runs in a separate th
         auto &player = client_info->get_player();
 		player.notify("Welcome, " + player.get_name() + ", have fun playing our game!");
 		player.notify("Type 'help' to see all the possible commands.");
+		player.notify("Type 'join' to join a game.");
 		player.prompt();
 
         while (running) { // game loop

@@ -1,13 +1,13 @@
 #include "stdafx.h"
-#include "Assassin.h"
+#include "Robber.h"
 
-void Assassin::printOptions(Game & game, Player & player)
+void Robber::printOptions(Game & game, Player & player)
 {
-	if (choosingCharacter) printKillingOptions(game, player);
+	if (choosingCharacter) printStealingOptions(game, player);
 	else Character::printOptions(game, player);
 }
 
-void Assassin::processState(Game & game, Player & player, string command)
+void Robber::processState(Game & game, Player & player, string command)
 {
 	if (choosingCharacter && !performedCharacter) {
 
@@ -20,7 +20,7 @@ void Assassin::processState(Game & game, Player & player, string command)
 				if (command == order || command == to_string(characterCount)) {
 
 					if (order == name) {
-						player.notify("The " + name +" is not skilled enough to take his own life.");
+						player.notify("The " + name +" can't steal from himself, Mrs. " + name + " already does that to him.");
 						player.notify("Please pick someone else.");
 						player.notify();
 						return;
@@ -29,11 +29,11 @@ void Assassin::processState(Game & game, Player & player, string command)
 					auto &otherPlayer = game.otherPlayer(player);
 					if (otherPlayer.hasCharacter(order)) {
 						for (auto character = otherPlayer.charactersBegin(); character != otherPlayer.charactersEnd(); character++) {
-							if ((*character)->getName() == order) (*character)->kill();
+							if ((*character)->getName() == order) (*character)->steal();
 						}
 					}
 
-					otherPlayer.notify("The " + name + " silently killed the " + order);
+					otherPlayer.notify("The "+ name +" stole from the " + order);
 
 					performedCharacter = true;
 					choosingCharacter = false;
@@ -42,24 +42,25 @@ void Assassin::processState(Game & game, Player & player, string command)
 				characterCount++;
 			}
 
-			player.notify("'" + command + "' is not a character you can kill.");
+			player.notify("'" + command + "' is not a character you can steal from.");
 			player.notify();
 		}
 	}
 	else {
 		if (command == "6") {
 			choosingCharacter = true;
-		} else {
+		}
+		else {
 			Character::processState(game, player, command);
 		}
 	}
 
 }
 
-void Assassin::printKillingOptions(Game & game, Player & player)
+void Robber::printStealingOptions(Game & game, Player & player)
 {
-	player.notify("Pick a character to kill:");
-	player.notify("[0] Don't kill anyone yet");
+	player.notify("Pick a character to steal from:");
+	player.notify("[0] Don't steal anyone yet");
 	int characterCount = 1;
 	for (auto & order : game.getCharacterOrder()) {
 		player.notify("[" + to_string(characterCount) + "] " + order);
@@ -67,7 +68,7 @@ void Assassin::printKillingOptions(Game & game, Player & player)
 	}
 }
 
-void Assassin::characterOptions(Game & game, Player & player)
+void Robber::characterOptions(Game & game, Player & player)
 {
-	player.notify("[6] Choose a character to kill");
+	player.notify("[6] Choose a character to steal from");
 }

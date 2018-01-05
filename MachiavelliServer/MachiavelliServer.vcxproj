@@ -178,17 +178,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assassin.cpp" />
+    <ClCompile Include="Builder.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="BuildingFactory.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterFactory.cpp" />
     <ClCompile Include="ChooseCharacter.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
+    <ClCompile Include="Condottiere.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="King.cpp" />
     <ClCompile Include="MachiavelliServer.cpp" />
+    <ClCompile Include="Mage.cpp" />
+    <ClCompile Include="Merchant.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Preacher.cpp" />
     <ClCompile Include="RandomGenerator.cpp" />
+    <ClCompile Include="Robber.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="stdafx.cpp">
