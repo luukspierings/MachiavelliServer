@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "BuildingFactory.h"
+#include "BuildingDeck.h"
 
 vector<unique_ptr<Building>> BuildingFactory::getBuildings()
 {
+	BuildingDeck bDeck;
+	std::ifstream stream("Bouwkaarten.csv");
+	stream >> bDeck;
 
 	vector<unique_ptr<Building>> buildings{};
 

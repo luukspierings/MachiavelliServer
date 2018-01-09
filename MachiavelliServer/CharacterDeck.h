@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Deck.h"
-#include "Character.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
-class CharacterDeck: public Deck<Character> {
+class CharacterDeck {
 
 public:
-
+	friend std::ifstream& operator>>(std::ifstream & ifstream, CharacterDeck& characterDeck);
 
 private:
 
