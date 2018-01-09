@@ -12,8 +12,6 @@ using namespace std;
 template<typename T>
 class Deck {
 public:
-	Deck() {
-	}
 
 	void shuffle_stack() {
 		shuffle(stack.begin(), stack.end(), RandomGenerator::getInstance().generator());

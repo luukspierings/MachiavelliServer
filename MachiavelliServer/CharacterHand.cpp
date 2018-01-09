@@ -23,26 +23,24 @@ std::ifstream & operator>>(std::ifstream & ifstream, CharacterHand & characterHa
 		vector<string> tokens;
 		for (string each; getline(split, each, split_char);) tokens.push_back(each);
 		
-		characterHand.push_top_stack(characterHand.makeCharacter(tokens[1], stoi(tokens[1]))); // could throw exception
+		characterHand.addCharacter(tokens[1], stoi(tokens[1])); // could throw exception
 	}
 	return ifstream;
 }
 
-Character CharacterHand::makeCharacter(string name, int order) {
-	if (name == "Moordenaar") return Assassin{order};
-	if (name == "Dief") return Robber{ order };
-	if (name == "Magiër") return Mage{ order };
-	if (name == "Koning") return King{ order };
-	if (name == "Prediker") return Preacher{ order };
-	if (name == "Koopman") return Merchant{ order };
-	if (name == "Bouwmeester") return Builder{ order };
-	if (name == "Condottiere") return Condottiere{ order };
-		
-	throw std::invalid_argument("received name of unknown character");
+void CharacterHand::addCharacter(string name, int order) {
+	if (name == "Moordenaar") push_top_stack(Assassin(order));
+	/*if (name == "Dief") push_top_stack(Robber{ order });
+	if (name == "Magiër") push_top_stack(Mage{ order });
+	if (name == "Koning") push_top_stack(King{ order });
+	if (name == "Prediker") push_top_stack(Preacher{ order });
+	if (name == "Koopman") push_top_stack(Merchant{ order });
+	if (name == "Bouwmeester") push_top_stack(Builder{ order });
+	if (name == "Condottiere") push_top_stack(Condottiere{ order });*/
 }
 
 void CharacterHand::sortCharacters()
 {
-	sort(stack.begin(), stack.end(), ordersort);
+	//sort(stack.begin(), stack.end(), ordersort);
 }
 

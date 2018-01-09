@@ -19,7 +19,7 @@ public:
 
 	friend ifstream& operator>>(ifstream& ifstream, CharacterHand& characterHand);
 
-	Character makeCharacter(string name, int order);
+	void addCharacter(string name, int order);
 
 	void sortCharacters();
 

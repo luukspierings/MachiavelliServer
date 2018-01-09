@@ -206,6 +206,9 @@
     <ClCompile Include="CharacterHand.cpp">
       <Filter>Game\Decks</Filter>
     </ClCompile>
+    <ClCompile Include="BuildingDeck.cpp">
+      <Filter>Game\Decks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Bouwkaarten.csv">
