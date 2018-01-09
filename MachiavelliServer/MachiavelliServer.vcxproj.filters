@@ -120,9 +120,6 @@
     <ClInclude Include="Deck.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterDeck.h">
-      <Filter>Game\Decks</Filter>
-    </ClInclude>
     <ClInclude Include="BuildingDeck.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
@@ -130,6 +127,9 @@
       <Filter>Game\Decks</Filter>
     </ClInclude>
     <ClInclude Include="BuildingHand.h">
+      <Filter>Game\Decks</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterHand.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
   </ItemGroup>

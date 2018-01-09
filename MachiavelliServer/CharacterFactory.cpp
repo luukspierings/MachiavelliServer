@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CharacterFactory.h"
 
+#include <iostream>
+
+#include "CharacterDeck.h"
 #include "Assassin.h"
 #include "Builder.h"
 #include "Condottiere.h"
@@ -14,7 +17,12 @@ vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 {
 	vector<unique_ptr<Character>> characters {};
 
+	CharacterDeck deck;
+
 	FileHandler fileHandler{ "karakterkaarten.csv" };
+	std::ifstream stream("karakterkaarten.csv");
+	stream >> deck;
+
 	vector<vector<string>> data = fileHandler.getValues();
 
 	for (auto row : data) {
