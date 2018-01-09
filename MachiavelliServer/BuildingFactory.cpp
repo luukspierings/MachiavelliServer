@@ -13,7 +13,7 @@ vector<unique_ptr<Building>> BuildingFactory::getBuildings()
 	vector<vector<string>> data = fileHandler.getValues();
 
 	for (auto row : data) {
-		
+
 		CardColor color = CardColor::NONE;
 
 		if (row[2] == "geel") color = CardColor::YELLOW;

@@ -163,6 +163,7 @@
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="Condottiere.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="DeckFactory.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Hand.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="ChooseCharacter.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="Condottiere.cpp" />
+    <ClCompile Include="DeckFactory.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="King.cpp" />
