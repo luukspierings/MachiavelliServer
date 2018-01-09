@@ -44,6 +44,7 @@ void Condottiere::processState(Game & game, Player & player, string command)
 		}
 	}
 	else {
+		if (command == "6" && !game.otherPlayer(player).isFinished() && !game.otherPlayer(player).isPreached()) {
 			choosingCards = true;
 		}
 		else {
