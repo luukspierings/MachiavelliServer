@@ -132,6 +132,9 @@
     <ClInclude Include="CharacterHand.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
+    <ClInclude Include="DeckFactory.h">
+      <Filter>Game\Factories</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MachiavelliServer.cpp">
@@ -205,6 +208,12 @@
     </ClCompile>
     <ClCompile Include="CharacterHand.cpp">
       <Filter>Game\Decks</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingDeck.cpp">
+      <Filter>Game\Decks</Filter>
+    </ClCompile>
+    <ClCompile Include="DeckFactory.cpp">
+      <Filter>Game\Factories</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

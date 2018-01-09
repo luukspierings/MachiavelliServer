@@ -17,12 +17,7 @@ vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 {
 	vector<unique_ptr<Character>> characters {};
 
-	CharacterHand deck;
-
 	FileHandler fileHandler{ "karakterkaarten.csv" };
-	std::ifstream stream("karakterkaarten.csv");
-	stream >> deck;
-
 	vector<vector<string>> data = fileHandler.getValues();
 
 	for (auto row : data) {
