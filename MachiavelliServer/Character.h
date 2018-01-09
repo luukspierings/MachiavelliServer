@@ -32,6 +32,7 @@ public:
 	virtual void printOptions(Game& game, Player& player) override;
 	virtual void processState(Game& game, Player& player, string command) override;
 
+	int getOrder() const { return order; }
 
 protected:
 

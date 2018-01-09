@@ -7,7 +7,7 @@
 class King : public Character {
 
 public:
-	King() {
+	King(int order) : Character(order) {
 		color = CardColor::YELLOW;
 		name = "King";
 	}

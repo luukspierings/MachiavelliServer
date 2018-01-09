@@ -7,7 +7,7 @@
 class Merchant : public Character {
 
 public:
-	Merchant() {
+	Merchant(int order) : Character(order) {
 		color = CardColor::GREEN;
 		name = "Merchant";
 	}
