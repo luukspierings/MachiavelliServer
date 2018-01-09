@@ -149,10 +149,11 @@
     <ClInclude Include="Assassin.h" />
     <ClInclude Include="Builder.h" />
     <ClInclude Include="Building.h" />
+    <ClInclude Include="BuildingDeck.h" />
     <ClInclude Include="BuildingFactory.h" />
-    <ClInclude Include="Card.h" />
     <ClInclude Include="CardColor.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterDeck.h" />
     <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="ChooseCharacter.h" />
     <ClInclude Include="CircularBuffer.h" />

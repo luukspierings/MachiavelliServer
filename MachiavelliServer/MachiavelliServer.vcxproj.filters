@@ -19,11 +19,11 @@
     <Filter Include="Game\Other states">
       <UniqueIdentifier>{f92c2932-d744-47c8-a14d-0512eaca64a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Cards">
-      <UniqueIdentifier>{e78b2e03-011a-40fa-ae89-9f214d82bda7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Factories">
       <UniqueIdentifier>{88e4b95d-56c5-4c18-b40f-56014e446d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Decks">
+      <UniqueIdentifier>{e78b2e03-011a-40fa-ae89-9f214d82bda7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,10 +118,13 @@
       <Filter>Game\Factories</Filter>
     </ClInclude>
     <ClInclude Include="Deck.h">
-      <Filter>Game\Cards</Filter>
+      <Filter>Game\Decks</Filter>
     </ClInclude>
-    <ClInclude Include="Card.h">
-      <Filter>Game\Cards</Filter>
+    <ClInclude Include="CharacterDeck.h">
+      <Filter>Game\Decks</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingDeck.h">
+      <Filter>Game\Decks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
