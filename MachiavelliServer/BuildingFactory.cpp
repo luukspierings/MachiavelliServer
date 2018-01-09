@@ -4,9 +4,9 @@
 
 vector<unique_ptr<Building>> BuildingFactory::getBuildings()
 {
-	BuildingDeck bDeck;
+	/*BuildingDeck bDeck;
 	std::ifstream stream("Bouwkaarten.csv");
-	stream >> bDeck;
+	stream >> bDeck;*/
 
 	vector<unique_ptr<Building>> buildings{};
 

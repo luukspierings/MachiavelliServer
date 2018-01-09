@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "CharacterDeck.h"
+#include "CharacterHand.h"
 
-std::ifstream & operator>>(std::ifstream & ifstream, CharacterDeck & characterDeck)
+std::ifstream & operator>>(std::ifstream & ifstream, CharacterHand & characterHand)
 {
 	std::string test;
 

@@ -1,17 +1,23 @@
 #pragma once
 
+
+#include <deque>
+
 #include "Deck.h";
+
+using namespace std;
+
 
 template<typename T>
 class Hand : public Deck<T> {
 
 public:
 
-	T::Iterator begin() const { return stack.begin(); }
-	T::Iterator end() const { return stack.end(); }
-	T::Iterator amount() const { return stack.amount(); }
+	typename deque<T>::iterator HandBegin() const { return stack.begin(); }
+	typename deque<T>::iterator HandEnd() const { return stack.end(); }
+	typename deque<T>::iterator HandAmount() const { return stack.amount(); }
 
-	T pull(T::Iterator obj)
+	T HandPull(typename deque<T>::iterator obj)
 	{
 		T ret = move(obj);
 		stack.erase(obj);

@@ -3,9 +3,11 @@
 #include <algorithm>
 #include <deque>
 
+using namespace std;
+
+
 #include "RandomGenerator.h"
 
-using namespace std;
 
 template<typename T>
 class Deck {

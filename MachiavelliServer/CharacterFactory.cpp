@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "CharacterDeck.h"
+#include "CharacterHand.h"
 #include "Assassin.h"
 #include "Builder.h"
 #include "Condottiere.h"
@@ -17,7 +17,7 @@ vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 {
 	vector<unique_ptr<Character>> characters {};
 
-	CharacterDeck deck;
+	CharacterHand deck;
 
 	FileHandler fileHandler{ "karakterkaarten.csv" };
 	std::ifstream stream("karakterkaarten.csv");
