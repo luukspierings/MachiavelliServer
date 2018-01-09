@@ -24,9 +24,6 @@ public:
 
 	string getPrint();
 
-
-
-
 private:
 
 	string name;

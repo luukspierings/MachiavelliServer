@@ -9,6 +9,7 @@ class Assassin : public Character{
 public:
 	Assassin(int order): Character(order) {
 		name = "Assassin";
+		description = "Kills another character";
 	}
 
 

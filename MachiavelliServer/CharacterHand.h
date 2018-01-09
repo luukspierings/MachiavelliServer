@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <memory>
+#include <vector>
 
 #include "Hand.h"
 #include "Deck.h"
@@ -23,6 +24,8 @@ public:
 	void addCharacter(string name, int order);
 
 	void sortCharacters();
+
+	vector<string> getOverzicht() const;
 
 private:
 

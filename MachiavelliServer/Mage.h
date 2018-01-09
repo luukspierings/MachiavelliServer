@@ -13,6 +13,7 @@ class Mage : public Character {
 public:
 	Mage(int order) : Character(order) {
 		name = "Mage";
+		description = "Could trade building cards";
 	}
 
 	void printOptions(Game& game, Player& player) override;

@@ -10,6 +10,7 @@ public:
 	Merchant(int order) : Character(order) {
 		color = CardColor::GREEN;
 		name = "Merchant";
+		description = "Recieves extra income and income from green buildings";
 	}
 
 	void startCharacter(Game& game, Player& player) override;

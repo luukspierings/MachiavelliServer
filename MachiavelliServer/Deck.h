@@ -29,16 +29,16 @@ public:
 		return stack.front();
 	}
 
-	//void discard(const T& card) {
-	//	discard_pile.push_front(move(card));
-	//}
+	void discard(const T& card) {
+		discard_pile.push_front(move(card));
+	}
 	void discard(T&& card) {
 		discard_pile.push_front(move(card));
 	}
 
-	//void push_bottom_stack(const T& card) {
-	//	stack.push_back(move(card));
-	//}
+	void push_bottom_stack(const T& card) {
+		stack.push_back(move(card));
+	}
 	void push_bottom_stack(T&& card) {
 		stack.push_back(move(card));
 	}
@@ -59,7 +59,6 @@ public:
 		swap(stack, discard_pile);
 
 		if (shuffle_afterwards) shuffle_stack();
-
 	}
 
 	void clearAll() {

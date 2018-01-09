@@ -59,6 +59,7 @@ void Game::removeClient(ClientInfo & client)
 		for (auto it = clients.begin(); it != clients.end(); it = clients.begin())
 		{
 			auto &player = (*it)->get_player();
+			player.setWaiting(false);
 			player.notify("The game doesn't have enough players to keep playing...");
 			player.notify("You win!");
 			player.prompt();
@@ -68,7 +69,7 @@ void Game::removeClient(ClientInfo & client)
 	}
 }
 
-bool Game::hasClient(ClientInfo & client)
+bool Game::hasClient(ClientInfo & client) const
 {
 	for (auto it = clients.begin(); it != clients.end();it++)
 	{
@@ -99,7 +100,7 @@ void Game::start()
 {
 	notifyAllPlayers("Let the game begin, and may the best win.");
 
-	// start with 2 coins and 3 buildings
+	// start with 2 coins and 4 buildings
 	for (auto & client : clients) {
 		auto &player = client->get_player();
 

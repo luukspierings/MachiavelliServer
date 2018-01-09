@@ -42,26 +42,6 @@ public:
 	bool isKing() const { return king; }
 	void setKing(bool setKing) { king = setKing; }
 
-	/*
-	void putCharacter(unique_ptr<Character> character);
-	unique_ptr<Character> pullCharacter(string characterName);
-
-	void putBuilding(unique_ptr<Building> building);
-	unique_ptr<Building> pullBuilding(string buildingName);
-	
-	unique_ptr<Building> destroyBuilding(string buildingName);
-
-	auto charactersBegin() { return characters.begin(); }
-	auto charactersEnd() { return characters.end(); }
-
-	auto handBuildingsBegin() const { return handBuildings.begin(); }
-	auto handBuildingsEnd() const { return handBuildings.end(); }
-	int handBuildingsAmount() const { return static_cast<int>(handBuildings.size()); }
-
-	auto stackBuildingsBegin() const { return stackBuildings.begin(); }
-	auto stackBuildingsEnd() const { return stackBuildings.end(); }
-	int stackBuildingsAmount() const { return static_cast<int>(stackBuildings.size()); }*/
-
 	int getCoins() const { return coins; }
 	void earnCoins(int earning) { if (earning > 0) { coins += earning; } }
 	int stealCoins() { int c = coins; coins = 0; return c; }
@@ -98,10 +78,6 @@ private:
 	BuildingHand builtBuildings;
 
 	CharacterHand characters;
-
-	/*vector<unique_ptr<Character>> characters;
-	vector<unique_ptr<Building>> handBuildings;
-	vector<unique_ptr<Building>> stackBuildings;*/
 
 	bool waiting;
 

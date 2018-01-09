@@ -13,6 +13,7 @@ public:
 	Condottiere(int order) : Character(order) {
 		color = CardColor::RED;
 		name = "Condottiere";
+		description = "Can destroy buildings of other players and recieves income from red buildings";
 	}
 
 	void printOptions(Game& game, Player& player) override;

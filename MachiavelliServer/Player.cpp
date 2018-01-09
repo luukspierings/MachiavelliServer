@@ -7,11 +7,7 @@
 //
 
 #include "stdafx.h"
-
 #include "Player.h"
-
-
-
 
 bool Player::hasMessages()
 {
@@ -49,42 +45,6 @@ bool Player::hasCharacter(Character* character)
 	}
 	return false;
 }
-//
-//void Player::putCharacter(unique_ptr<Character> character)
-//{
-//	characters.push_back(move(character));
-//}
-//
-//unique_ptr<Character> Player::pullCharacter(string characterName)
-//{
-//	unique_ptr<Character> buf;
-//	for (auto it = characters.begin(); it != characters.end(); it++) {
-//		if ((*it)->getName() == characterName) {
-//			buf = move(*it);
-//			characters.erase(it);
-//			break;
-//		}
-//	}
-//	return buf;
-//}
-//
-//void Player::putBuilding(unique_ptr<Building> building)
-//{
-//	handBuildings.push_back(move(building));
-//}
-//
-//unique_ptr<Building> Player::pullBuilding(string buildingName)
-//{
-//	unique_ptr<Building> buf;
-//	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
-//		if ((*it)->getName() == buildingName) {
-//			buf = move(*it);
-//			handBuildings.erase(it);
-//			break;
-//		}
-//	}
-//	return buf;
-//}
 
 void Player::buyBuilding(string buildingName)
 {
@@ -104,19 +64,6 @@ void Player::buyBuilding(string buildingName)
 		}
 	}
 }
-//
-//unique_ptr<Building> Player::destroyBuilding(string buildingName)
-//{
-//	unique_ptr<Building> buf;
-//	for (auto it = stackBuildings.begin(); it != stackBuildings.end(); it++) {
-//		if ((*it)->getName() == buildingName) {
-//			buf = move(*it);
-//			stackBuildings.erase(it);
-//			break;
-//		}
-//	}
-//	return buf;
-//}
 
 int Player::countPoints()
 {

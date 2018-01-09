@@ -26,17 +26,19 @@ public:
 
 	Game() {
 		deckFactory.loadBuildingDeck(buildingDeck);
+		buildingDeck.shuffle_stack();
+
 		deckFactory.loadCharacterHand(characterHand);
 	};
 
 	void addClient(shared_ptr<ClientInfo> client);
 	void removeClient(ClientInfo& client);
 	int getClientsAmount() const { return static_cast<int>(clients.size()); }
-	bool hasClient(ClientInfo& client);
+	bool hasClient(ClientInfo& client) const;
 
 	Player& otherPlayer(Player& player);
 
-	bool hasState() { return (!!currentState); };
+	bool hasState() const { return (!!currentState); };
 	State& getCurrentState() { return *currentState; };
 	void showState();
 
@@ -52,7 +54,6 @@ public:
 
 	BuildingDeck& getBuildingDeck() { return buildingDeck; };
 	CharacterHand& getCharacterHand() { return characterHand; };
-
 
 private:
 

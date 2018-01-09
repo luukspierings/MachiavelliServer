@@ -45,3 +45,27 @@ void CharacterHand::sortCharacters()
 	sort(stack.begin(), stack.end(), ordersort);
 }
 
+vector<string> CharacterHand::getOverzicht() const
+{
+	vector<string> orderedOverzicht;
+	vector<pair<int, string>> overzicht;
+
+	for (const auto & character : stack) {
+		overzicht.push_back(make_pair(character->getOrder(), " " + to_string(character->getOrder()) + " | " + character->getName() + " | " + character->getDescription()));
+	}
+	for (const auto & character : discard_pile) {
+		overzicht.push_back(make_pair(character->getOrder(), " " + to_string(character->getOrder()) + " | " + character->getName() + " | " + character->getDescription()));
+	}
+
+	sort(overzicht.begin(), overzicht.end(), [](auto &left, auto &right) {
+		return left.first < right.first;
+	});
+
+	orderedOverzicht.push_back("Character overview:");
+	for (auto & msg : overzicht) {
+		orderedOverzicht.push_back(msg.second);
+	}
+
+	return orderedOverzicht;
+}
+

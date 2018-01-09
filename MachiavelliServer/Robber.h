@@ -9,6 +9,7 @@ class Robber : public Character {
 public:
 	Robber(int order) : Character(order) {
 		name = "Robber";
+		description = "Could steal money from characters";
 	}
 
 	void printOptions(Game& game, Player& player) override;

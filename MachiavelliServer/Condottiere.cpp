@@ -44,7 +44,6 @@ void Condottiere::processState(Game & game, Player & player, string command)
 		}
 	}
 	else {
-		if (command == "6" && !game.otherPlayer(player).isFinished()) {
 			choosingCards = true;
 		}
 		else {
@@ -71,6 +70,7 @@ void Condottiere::printChoosingOptions(Game & game, Player & player)
 void Condottiere::characterOptions(Game & game, Player & player)
 {
 	if (game.otherPlayer(player).isFinished()) player.notify("[-] Enemy has 8 or more buildings, so you can't destroy any more buildings");
+	if (game.otherPlayer(player).isPreached()) player.notify("[-] Enemy has preached for his buildings, so you can't destroy any this turn");
 	else player.notify("[6] Destroy an enemy's building");
 }
 

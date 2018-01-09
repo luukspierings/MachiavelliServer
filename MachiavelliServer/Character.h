@@ -26,6 +26,7 @@ public:
 	bool isStolen() const { return stolen; };
 
 	string getName() const { return name; };
+	string getDescription() const { return description; };
 
 	virtual void startCharacter(Game& game, Player& player);
 
@@ -44,6 +45,7 @@ protected:
 	int order = 0;
 	CardColor color = CardColor::NONE;
 	string name = "empty character";
+	string description = "-";
 
 	bool chosen;
 

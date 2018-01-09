@@ -16,7 +16,7 @@ std::ifstream & operator>>(std::ifstream & ifstream, BuildingDeck & characterDec
 		if (tokens[2] == "groen") color = CardColor::GREEN;
 		if (tokens[2] == "blauw") color = CardColor::BLUE;
 		if (tokens[2] == "rood") color = CardColor::RED;
-		//if (row[2] == "lila") color = CardColor::LILAC;
+		if (tokens[2] == "lila") color = CardColor::LILAC;
 
 		if (color != CardColor::NONE) 
 		{
