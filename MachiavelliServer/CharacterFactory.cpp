@@ -23,7 +23,7 @@ vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 	std::ifstream stream("karakterkaarten.csv");
 	stream >> deck;
 
-	vector<vector<string>> data = fileHandler.getValues();
+	/*vector<vector<string>> data = fileHandler.getValues();
 
 	for (auto row : data) {
 		if (row[1] == "Moordenaar") characters.push_back(make_unique<Assassin>());
@@ -34,7 +34,7 @@ vector<unique_ptr<Character>> CharacterFactory::getCharacters()
 		if (row[1] == "Koopman") characters.push_back(make_unique<Merchant>());
 		if (row[1] == "Bouwmeester") characters.push_back(make_unique<Builder>());
 		if (row[1] == "Condottiere") characters.push_back(make_unique<Condottiere>());
-	}
+	}*/
 
 	return characters;
 }

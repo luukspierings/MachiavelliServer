@@ -10,7 +10,7 @@
 class Mage : public Character {
 
 public:
-	Mage() {
+	Mage(int order) : Character(order) {
 		name = "Mage";
 	}
 

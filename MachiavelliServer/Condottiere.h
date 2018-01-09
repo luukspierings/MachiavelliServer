@@ -10,7 +10,7 @@
 class Condottiere : public Character {
 
 public:
-	Condottiere() {
+	Condottiere(int order) : Character(order) {
 		color = CardColor::RED;
 		name = "Condottiere";
 	}

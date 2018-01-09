@@ -7,7 +7,7 @@
 class Preacher : public Character {
 
 public:
-	Preacher() {
+	Preacher(int order) : Character(order) {
 		color = CardColor::BLUE;
 		name = "Preacher";
 	}

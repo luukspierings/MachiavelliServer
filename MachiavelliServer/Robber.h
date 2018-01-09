@@ -7,7 +7,7 @@
 class Robber : public Character {
 
 public:
-	Robber() {
+	Robber(int order) : Character(order) {
 		name = "Robber";
 	}
 

@@ -7,7 +7,7 @@
 class Builder : public Character {
 
 public:
-	Builder() {
+	Builder(int order) : Character(order) {
 		name = "Builder";
 	}
 

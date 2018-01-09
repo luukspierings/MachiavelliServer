@@ -7,9 +7,10 @@
 class Assassin : public Character{
 
 public:
-	Assassin() {
+	Assassin(int order): Character(order) {
 		name = "Assassin";
 	}
+
 
 	void printOptions(Game& game, Player& player) override;
 	void processState(Game& game, Player& player, string command) override;
