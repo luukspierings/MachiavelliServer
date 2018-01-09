@@ -16,8 +16,8 @@ void Character::startCharacter(Game & game, Player & player)
 	}
 
 	int earning = 0;
-	for (auto it = player.stackBuildingsBegin(); it != player.stackBuildingsEnd(); it++) {
-		if ((*it)->getColor() == color) earning++;
+	for (auto& it = player.getBuiltBuildings().handBegin(); it != player.getBuiltBuildings().handEnd(); it++) {
+		if (it->getColor() == color) earning++;
 	}
 	player.earnCoins(earning);
 	if (earning > 0) game.notifyAllPlayers(player.get_name() + " earned " + to_string(earning) + " coins from his buildings.");
@@ -39,16 +39,16 @@ void Character::processState(Game & game, Player & player, string command)
 		}
 		else {
 			int buildingCount = 1;
-			for (auto it = player.handBuildingsBegin(); it != player.handBuildingsEnd(); it++) {
-				if (command == (*it)->getName() || command == to_string(buildingCount)) {
+			for (auto it = player.getHandBuildings().handBegin(); it != player.getHandBuildings().handEnd(); it++) {
+				if (command == it->getName() || command == to_string(buildingCount)) {
 
-					if ((*it)->getCost() > player.getCoins()) {
+					if (it->getCost() > player.getCoins()) {
 						player.notify("You don't have enough coins to buy this building!");
 						player.notify();
 					}
 					else {
-						game.notifyAllPlayers(player.get_name() + " builds the building: " + (*it)->getPrint());
-						player.buyBuilding((*it)->getName());
+						game.notifyAllPlayers(player.get_name() + " builds the building: " + it->getPrint());
+						player.buyBuilding(it->getName());
 						buildingsBuilt++;
 						if(buildingsBuilt >= maxBuilding) choosingBuild = false;
 					}
@@ -66,8 +66,8 @@ void Character::processState(Game & game, Player & player, string command)
 		bool choseCard = false;
 		int buildingCount = 1;
 		for (auto it = buildingCards.begin(); it != buildingCards.end();) {
-			if (command == (*it)->getName() || command == to_string(buildingCount)) {
-				player.putBuilding(move(*it));
+			if (command == it->getName() || command == to_string(buildingCount)) {
+				player.getHandBuildings().push_top_stack(move(*it));
 				it = buildingCards.erase(it);
 				choseCard = true;
 			}
@@ -79,7 +79,7 @@ void Character::processState(Game & game, Player & player, string command)
 
 		if (choseCard) {
 			for (auto it = buildingCards.begin(); it != buildingCards.end();) {
-				game.returnBuilding(move(*it));
+				game.getBuildingDeck().discard(move(*it));
 				it = buildingCards.erase(it);
 			}
 			choosingBuildingCard = false;
@@ -94,7 +94,7 @@ void Character::processState(Game & game, Player & player, string command)
 			player.setWaiting(true);
 			game.otherPlayer(player).setWaiting(true);
 			game.notifyAllPlayers(player.get_name() + " ends its turn.");
-			game.callNextCharacter(name);
+			game.callNextCharacter();
 			return;
 		}
 		else if (command == "2") {
@@ -102,10 +102,10 @@ void Character::processState(Game & game, Player & player, string command)
 			auto &otherPlayer = game.otherPlayer(player);
 
 			player.notify(otherPlayer.get_name() + "'s coins: " + to_string(otherPlayer.getCoins()));
-			player.notify(otherPlayer.get_name() + "'s buildings in hand: " + to_string(otherPlayer.handBuildingsAmount()));
+			player.notify(otherPlayer.get_name() + "'s buildings in hand: " + to_string(otherPlayer.getHandBuildings().handAmount()));
 			player.notify(otherPlayer.get_name() + "'s buildings built:");
-			for (auto it = otherPlayer.stackBuildingsBegin(); it != otherPlayer.stackBuildingsEnd(); it++) {
-				player.notify("- " + (*it)->getPrint());
+			for (auto it = otherPlayer.getBuiltBuildings().handBegin(); it != otherPlayer.getBuiltBuildings().handEnd(); it++) {
+				player.notify("- " + it->getPrint());
 			}
 			player.notify();
 
@@ -115,8 +115,8 @@ void Character::processState(Game & game, Player & player, string command)
 			performedDefault = true;
 		}
 		else if (!performedDefault && command == "4") {
-			buildingCards.push_back(move(game.getBuilding()));
-			buildingCards.push_back(move(game.getBuilding()));
+			buildingCards.push_back(move(game.getBuildingDeck().draw()));
+			buildingCards.push_back(move(game.getBuildingDeck().draw()));
 			choosingBuildingCard = true;
 		}
 		else if (buildingsBuilt < maxBuilding && command == "5") {
@@ -129,6 +129,13 @@ void Character::processState(Game & game, Player & player, string command)
 
 }
 
+void Character::reset()
+{
+	chosen = false;
+	dead = false;
+	stolen = false;
+}
+
 void Character::printOverview(Game & game, Player & player)
 {
 	player.notify("Amount of coins: " + to_string(player.getCoins()));
@@ -136,21 +143,21 @@ void Character::printOverview(Game & game, Player & player)
 	player.notify();
 
 	player.notify("Buildings built:");
-	for (auto it = player.stackBuildingsBegin(); it != player.stackBuildingsEnd(); it++) {
-		player.notify("- " + (*it)->getPrint());
+	for (auto it = player.getBuiltBuildings().handBegin(); it != player.getBuiltBuildings().handEnd(); it++) {
+		player.notify("- " + it->getPrint());
 	}
 
 	player.notify();
 
 	player.notify("Buildings in hand:");
-	for (auto it = player.handBuildingsBegin(); it != player.handBuildingsEnd(); it++) {
-		player.notify("- " + (*it)->getPrint());
+	for (auto it = player.getHandBuildings().handBegin(); it != player.getHandBuildings().handEnd(); it++) {
+		player.notify("- " + it->getPrint());
 	}
 
-	if (player.charactersBegin() != player.charactersEnd()) {
+	if (player.getCharacterHand().handBegin() != player.getCharacterHand().handEnd()) {
 		player.notify();
 		player.notify("Characters left:");
-		for (auto it = player.charactersBegin(); it != player.charactersEnd(); it++) {
+		for (auto it = player.getCharacterHand().handBegin(); it != player.getCharacterHand().handEnd(); it++) {
 			player.notify("- " + (*it)->getName() + ((*it)->isDead()? " (assassinated)" : ""));
 		}
 	}
@@ -175,8 +182,8 @@ void Character::buildOptions(Game & game, Player & player)
 	player.notify("Choose a building to build:");
 	player.notify("[0] Don't build for now");
 	int buildingCount = 1;
-	for (auto it = player.handBuildingsBegin(); it != player.handBuildingsEnd(); it++) {
-		player.notify("[" + to_string(buildingCount) + "] " + to_string((*it)->getCost()) + " coins | " + (*it)->getPrint());
+	for (auto it = player.getHandBuildings().handBegin(); it != player.getHandBuildings().handEnd(); it++) {
+		player.notify("[" + to_string(buildingCount) + "] " + to_string(it->getCost()) + " coins | " + it->getPrint());
 		buildingCount++;
 	}
 }
@@ -186,7 +193,7 @@ void Character::chooseBuildingOptions(Game & game, Player & player)
 	player.notify("Choose the building to keep, the other discards:");
 	int buildingCount = 1;
 	for (auto& building : buildingCards) {
-		player.notify("["+ to_string(buildingCount)+"] " + building->getPrint());
+		player.notify("["+ to_string(buildingCount)+"] " + building.getPrint());
 		buildingCount++;
 	}
 }

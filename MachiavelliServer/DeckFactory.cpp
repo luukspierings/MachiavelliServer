@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "DeckFactory.h"
 #include "BuildingDeck.h"
+#include "CharacterHand.h"
 
-unique_ptr<BuildingDeck> DeckFactory::loadBuildingDeck()
+void DeckFactory::loadBuildingDeck(BuildingDeck& deck)
 {
-	BuildingDeck buildingDeck;
 	std::ifstream stream("Bouwkaarten.csv");
-	stream >> buildingDeck;
+	stream >> deck;
 	stream.close();
+}
 
-	return std::make_unique<BuildingDeck>(buildingDeck);
+void DeckFactory::loadCharacterHand(CharacterHand& hand)
+{
+	std::ifstream stream("karakterkaarten.csv");
+	stream >> hand;
+	stream.close();
 }

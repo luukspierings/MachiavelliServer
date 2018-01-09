@@ -3,18 +3,16 @@
 #include <algorithm>
 #include <deque>
 
-using namespace std;
-
-
 #include "RandomGenerator.h"
 
+using namespace std;
 
 template<typename T>
 class Deck {
 public:
 
 	void shuffle_stack() {
-		shuffle(stack.begin(), stack.end(), RandomGenerator::getInstance().generator());
+		shuffle(stack.begin(), stack.end(), RandomGenerator::getInstance().getGenerator());
 	}
 
 	bool stack_empty() const { return stack.empty(); }
@@ -25,6 +23,10 @@ public:
 		T buffer = move(stack.front());
 		stack.pop_front();
 		return buffer;
+	}
+
+	T top() {
+		return stack.front();
 	}
 
 	//void discard(const T& card) {
@@ -41,9 +43,9 @@ public:
 		stack.push_back(move(card));
 	}
 
-	//void push_top_stack(const T& card) {
-	//	stack.push_front(move(card));
-	//}
+	void push_top_stack(const T& card) {
+		stack.push_front(move(card));
+	}
 	void push_top_stack(T&& card) {
 		stack.push_front(move(card));
 	}
@@ -57,8 +59,13 @@ public:
 		swap(stack, discard_pile);
 
 		if (shuffle_afterwards) shuffle_stack();
+
 	}
 
+	void clearAll() {
+		stack.clear();
+		discard_pile.clear();
+	}
 
 protected:
 	deque<T> stack;

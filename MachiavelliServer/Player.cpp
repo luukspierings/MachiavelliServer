@@ -41,61 +41,61 @@ void Player::prompt() {
 	}
 }
 
-bool Player::hasCharacter(string characterName)
+bool Player::hasCharacter(Character* character)
 {
-	for (const auto & c : characters) {
-		if (c->getName() == characterName && !c->isDead()) return true;
+	if (character == nullptr) return false;
+	for (auto& it = characters.handBegin(); it != characters.handEnd(); it++) {
+		if ((*it)->getName() == character->getName() && !(*it)->isDead()) return true;
 	}
 	return false;
 }
-
-void Player::putCharacter(unique_ptr<Character> character)
-{
-	characters.push_back(move(character));
-}
-
-unique_ptr<Character> Player::pullCharacter(string characterName)
-{
-	unique_ptr<Character> buf;
-	for (auto it = characters.begin(); it != characters.end(); it++) {
-		if ((*it)->getName() == characterName) {
-			buf = move(*it);
-			characters.erase(it);
-			break;
-		}
-	}
-	return buf;
-}
-
-void Player::putBuilding(unique_ptr<Building> building)
-{
-	handBuildings.push_back(move(building));
-}
-
-unique_ptr<Building> Player::pullBuilding(string buildingName)
-{
-	unique_ptr<Building> buf;
-	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
-		if ((*it)->getName() == buildingName) {
-			buf = move(*it);
-			handBuildings.erase(it);
-			break;
-		}
-	}
-	return buf;
-}
+//
+//void Player::putCharacter(unique_ptr<Character> character)
+//{
+//	characters.push_back(move(character));
+//}
+//
+//unique_ptr<Character> Player::pullCharacter(string characterName)
+//{
+//	unique_ptr<Character> buf;
+//	for (auto it = characters.begin(); it != characters.end(); it++) {
+//		if ((*it)->getName() == characterName) {
+//			buf = move(*it);
+//			characters.erase(it);
+//			break;
+//		}
+//	}
+//	return buf;
+//}
+//
+//void Player::putBuilding(unique_ptr<Building> building)
+//{
+//	handBuildings.push_back(move(building));
+//}
+//
+//unique_ptr<Building> Player::pullBuilding(string buildingName)
+//{
+//	unique_ptr<Building> buf;
+//	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
+//		if ((*it)->getName() == buildingName) {
+//			buf = move(*it);
+//			handBuildings.erase(it);
+//			break;
+//		}
+//	}
+//	return buf;
+//}
 
 void Player::buyBuilding(string buildingName)
 {
-	for (auto it = handBuildings.begin(); it != handBuildings.end(); it++) {
-		if ((*it)->getName() == buildingName) {
+	for (auto& it = handBuildings.handBegin(); it != handBuildings.handEnd(); it++) {
+		if (it->getName() == buildingName) {
 
-			int cost = (*it)->getCost();
+			int cost = it->getCost();
 
 			if (coins >= cost) {
 				coins -= cost;
-				stackBuildings.push_back(move(*it));
-				handBuildings.erase(it);
+				builtBuildings.push_top_stack(move(handBuildings.handPull(it)));
 				break;
 			}
 			else {
@@ -104,21 +104,21 @@ void Player::buyBuilding(string buildingName)
 		}
 	}
 }
+//
+//unique_ptr<Building> Player::destroyBuilding(string buildingName)
+//{
+//	unique_ptr<Building> buf;
+//	for (auto it = stackBuildings.begin(); it != stackBuildings.end(); it++) {
+//		if ((*it)->getName() == buildingName) {
+//			buf = move(*it);
+//			stackBuildings.erase(it);
+//			break;
+//		}
+//	}
+//	return buf;
+//}
 
-unique_ptr<Building> Player::destroyBuilding(string buildingName)
-{
-	unique_ptr<Building> buf;
-	for (auto it = stackBuildings.begin(); it != stackBuildings.end(); it++) {
-		if ((*it)->getName() == buildingName) {
-			buf = move(*it);
-			stackBuildings.erase(it);
-			break;
-		}
-	}
-	return buf;
-}
-
-int Player::countPoints() const
+int Player::countPoints()
 {
 	int points = 0;
 
@@ -129,8 +129,9 @@ int Player::countPoints() const
 	bool hasAllColors = true;
 	vector<CardColor> minimumColors{ CardColor::BLUE, CardColor::GREEN, CardColor::RED, CardColor::YELLOW, CardColor::LILAC };
 	vector<CardColor> colors{};
-	for (auto & building : stackBuildings) {
-		if (find(colors.begin(), colors.end(), building->getColor()) == colors.end()) colors.push_back(building->getColor());
+
+	for (auto& it = builtBuildings.handBegin(); it != builtBuildings.handEnd(); it++) {
+		if (find(colors.begin(), colors.end(), it->getColor()) == colors.end()) colors.push_back(it->getColor());
 	}
 	for (auto & minColor : minimumColors) {
 		if (find(colors.begin(), colors.end(), minColor) == colors.end()) hasAllColors = false;
@@ -140,18 +141,17 @@ int Player::countPoints() const
 	return points;
 }
 
-int Player::countBuildingPoints() const
+int Player::countBuildingPoints()
 {
 	int points = 0;
-	for (auto & building : stackBuildings) {
-		points += building->getPoints();
+	for (auto& it = builtBuildings.handBegin(); it != builtBuildings.handEnd(); it++) {
+		points += it->getPoints();
 	}
 	return points;
 }
 
 void Player::resetRound()
 {
-	characters.clear();
 	waiting = (!king);
 	preached = false;
 }
@@ -161,13 +161,10 @@ void Player::reset()
 	coins = 0;
 	king = false;
 	preached = false;
-	characters.clear();
-	handBuildings.clear();
-	stackBuildings.clear();
 	waiting = false;
 }
 
 bool Player::isFinished() const
 {
-	return (stackBuildingsAmount() >= 8);
+	return (builtBuildings.handAmount() >= 8);
 }

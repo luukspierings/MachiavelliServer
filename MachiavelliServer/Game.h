@@ -13,6 +13,10 @@
 #include "ClientInfo.h"
 #include "RandomGenerator.h"
 
+#include "DeckFactory.h"
+#include "BuildingDeck.h"
+#include "CharacterHand.h"
+
 #include "ChooseCharacter.h"
 
 using namespace std;
@@ -23,10 +27,8 @@ class Game
 public:
 
 	Game() {
-		resetCharacters();
-
-		buildings = buildingFactory.getBuildings();
-		shuffleBuildings();
+		deckFactory.loadBuildingDeck(buildingDeck);
+		deckFactory.loadCharacterHand(characterHand);
 	};
 
 	void addClient(shared_ptr<ClientInfo> client);
@@ -35,16 +37,6 @@ public:
 	bool hasClient(ClientInfo& client);
 
 	Player& otherPlayer(Player& player);
-
-	vector<string> getCharacterOrder() const { return characterOrder; };
-
-	void shuffleBuildings();
-	unique_ptr<Building> getBuilding();
-	void returnBuilding(unique_ptr<Building> building);
-
-	auto charactersBegin() { return characters.begin(); }
-	auto charactersEnd() { return characters.end(); }
-	void removeCharacter(vector<unique_ptr<Character>>::iterator it) { characters.erase(it); }
 
 	bool hasState() { return (!!currentState); };
 	State& getCurrentState() { return *currentState; };
@@ -55,11 +47,14 @@ public:
 	void endRound();
 	bool isFinished() const { return finished; }
 
-	void callNextCharacter(string lastCharacter = "");
-	void resetCharacters();
+	void callNextCharacter();
 
 	void notifyAllPlayers(string message = "");
 	void allPrompt();
+
+	BuildingDeck& getBuildingDeck() { return buildingDeck; };
+	CharacterHand& getCharacterHand() { return characterHand; };
+
 
 private:
 
@@ -68,20 +63,11 @@ private:
 	vector<shared_ptr<ClientInfo>> clients;
 	weak_ptr<ClientInfo> firstWon;
 
+	DeckFactory deckFactory;
+	BuildingDeck buildingDeck;
+	CharacterHand characterHand;
 
-	CharacterFactory characterFactory;
-	BuildingFactory buildingFactory;
-
-	vector<unique_ptr<Building>> buildings;
-	vector<unique_ptr<Building>> returnedBuildings;
-
-	vector<unique_ptr<Character>> characters;
-	vector<string> characterOrder;
-
-	unique_ptr<State> currentState;
-
-
-
+	shared_ptr<State> currentState;
 
 };
 

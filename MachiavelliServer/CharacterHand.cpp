@@ -10,8 +10,8 @@
 #include "Preacher.h"
 #include "Robber.h"
 
-bool ordersort(const Character& a, const Character& b) {
-	return (a.getOrder() < b.getOrder());
+bool ordersort(const shared_ptr<Character>& a, const shared_ptr<Character>& b) {
+	return (a->getOrder() < b->getOrder());
 }
 
 std::ifstream & operator>>(std::ifstream & ifstream, CharacterHand & characterHand)
@@ -23,24 +23,25 @@ std::ifstream & operator>>(std::ifstream & ifstream, CharacterHand & characterHa
 		vector<string> tokens;
 		for (string each; getline(split, each, split_char);) tokens.push_back(each);
 		
-		characterHand.addCharacter(tokens[1], stoi(tokens[1])); // could throw exception
+		characterHand.addCharacter(tokens[1], stoi(tokens[0]));
 	}
 	return ifstream;
 }
 
 void CharacterHand::addCharacter(string name, int order) {
-	if (name == "Moordenaar") push_top_stack(Assassin(order));
-	/*if (name == "Dief") push_top_stack(Robber{ order });
-	if (name == "Magiër") push_top_stack(Mage{ order });
-	if (name == "Koning") push_top_stack(King{ order });
-	if (name == "Prediker") push_top_stack(Preacher{ order });
-	if (name == "Koopman") push_top_stack(Merchant{ order });
-	if (name == "Bouwmeester") push_top_stack(Builder{ order });
-	if (name == "Condottiere") push_top_stack(Condottiere{ order });*/
+	if (name == "Moordenaar") push_top_stack(make_shared<Assassin>(order));
+	if (name == "Dief") push_top_stack(make_shared<Robber>(order));
+	if (name == "Magiër") push_top_stack(make_shared<Mage>(order));
+	if (name == "Koning") push_top_stack(make_shared<King>(order));
+	if (name == "Prediker") push_top_stack(make_shared<Preacher>(order));
+	if (name == "Koopman") push_top_stack(make_shared<Merchant>(order));
+	if (name == "Bouwmeester") push_top_stack(make_shared<Builder>(order));
+	if (name == "Condottiere") push_top_stack(make_shared<Condottiere>(order));
+	sortCharacters();
 }
 
 void CharacterHand::sortCharacters()
 {
-	//sort(stack.begin(), stack.end(), ordersort);
+	sort(stack.begin(), stack.end(), ordersort);
 }
 

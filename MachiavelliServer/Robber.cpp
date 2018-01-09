@@ -16,10 +16,10 @@ void Robber::processState(Game & game, Player & player, string command)
 		}
 		else {
 			int characterCount = 1;
-			for (auto & order : game.getCharacterOrder()) {
-				if (command == order || command == to_string(characterCount)) {
+			for (auto it = game.getCharacterHand().handBegin(); it != game.getCharacterHand().handEnd(); it++) {
+				if (command == (*it)->getName() || command == to_string(characterCount)) {
 
-					if (order == name) {
+					if ((*it)->getName() == name) {
 						player.notify("The " + name +" can't steal from himself, Mrs. " + name + " already does that to him.");
 						player.notify("Please pick someone else.");
 						player.notify();
@@ -27,13 +27,13 @@ void Robber::processState(Game & game, Player & player, string command)
 					}
 
 					auto &otherPlayer = game.otherPlayer(player);
-					if (otherPlayer.hasCharacter(order)) {
-						for (auto character = otherPlayer.charactersBegin(); character != otherPlayer.charactersEnd(); character++) {
-							if ((*character)->getName() == order) (*character)->steal();
+					if (otherPlayer.hasCharacter((*it).get())) {
+						for (auto character = otherPlayer.getCharacterHand().handBegin(); character != otherPlayer.getCharacterHand().handEnd(); character++) {
+							if ((*character)->getName() == (*it)->getName()) (*character)->steal();
 						}
 					}
 
-					otherPlayer.notify("The "+ name +" stole from the " + order);
+					otherPlayer.notify("The "+ name +" stole from the " + (*it)->getName());
 
 					performedCharacter = true;
 					choosingCharacter = false;
@@ -62,8 +62,8 @@ void Robber::printStealingOptions(Game & game, Player & player)
 	player.notify("Pick a character to steal from:");
 	player.notify("[0] Don't steal anyone yet");
 	int characterCount = 1;
-	for (auto & order : game.getCharacterOrder()) {
-		player.notify("[" + to_string(characterCount) + "] " + order);
+	for (auto it = game.getCharacterHand().handBegin(); it != game.getCharacterHand().handEnd(); it++) {
+		player.notify("[" + to_string(characterCount) + "] " + (*it)->getName());
 		characterCount++;
 	}
 }

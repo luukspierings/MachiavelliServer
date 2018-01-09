@@ -14,8 +14,8 @@ class Player;
 class Character : public State
 {
 public:
-	Character() {};
-	Character(int pOrder): order(pOrder) {};
+	Character() { reset(); };
+	Character(int pOrder) : order(pOrder) { reset(); };
 
 	virtual ~Character() = default;
 
@@ -34,14 +34,21 @@ public:
 
 	int getOrder() const { return order; }
 
+	void choose() { chosen = true; }
+	bool isChosen() const { return chosen; }
+
+	void reset();
+
 protected:
 
 	int order = 0;
 	CardColor color = CardColor::NONE;
 	string name = "empty character";
 
-	bool dead = false;
-	bool stolen = false;
+	bool chosen;
+
+	bool dead;
+	bool stolen;
 
 
 	virtual void printOverview(Game & game, Player & player) override;
@@ -52,7 +59,7 @@ protected:
 
 	// choosing the building and discarding 1
 	bool choosingBuildingCard = false;
-	vector<unique_ptr<Building>> buildingCards{};
+	vector<Building> buildingCards{};
 	virtual void chooseBuildingOptions(Game & game, Player & player);
 
 	// choosing the building to build

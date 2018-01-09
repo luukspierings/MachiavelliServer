@@ -6,24 +6,22 @@ void ChooseCharacter::processState(Game & game, Player & player, string command)
 {
 	bool choseCharacter = false;
 	int characterCount = 1;
-	for (vector<unique_ptr<Character>>::iterator it = game.charactersBegin(); it != game.charactersEnd(); it++) {
+	for (auto it = game.getCharacterHand().handBegin(); it != game.getCharacterHand().handEnd(); it++) {
+		if ((*it)->isChosen()) continue;
 		if (command == (*it)->getName() || command == to_string(characterCount)) {
 			choseCharacter = true;
 
 			if (choosingHand) {
-				player.putCharacter(std::move(*it));
-				game.removeCharacter(it);
+				player.getCharacterHand().push_top_stack(*it);
 			}
-			else {
-				game.removeCharacter(it);
-			}
+			(*it)->choose();
 
 			break;
 		}
 		characterCount++;
 	}
 	
-	if (game.charactersBegin() == game.charactersEnd()) {
+	if (allCharactersChosen(game, player)) {
 
 		auto& otherPlayer = game.otherPlayer(player);
 
@@ -58,7 +56,7 @@ void ChooseCharacter::printOptions(Game & game, Player & player)
 
 	player.notify("Characters in your hand:");
 
-	for (auto it = player.charactersBegin(); it != player.charactersEnd(); it++) {
+	for (auto it = player.getCharacterHand().handBegin(); it != player.getCharacterHand().handEnd(); it++) {
 		player.notify("- " + (*it)->getName());
 	}
 
@@ -72,10 +70,19 @@ void ChooseCharacter::printOptions(Game & game, Player & player)
 	}
 
 	int characterCount = 1;
-	for (auto it = game.charactersBegin(); it != game.charactersEnd(); it++) {
+	for (auto it = game.getCharacterHand().handBegin(); it != game.getCharacterHand().handEnd(); it++) {
+		if ((*it)->isChosen()) continue;
 		player.notify("["+to_string(characterCount) + "] " + (*it)->getName());
 		characterCount++;
 	}
 
 
+}
+
+bool ChooseCharacter::allCharactersChosen(Game & game, Player & player)
+{
+	for (auto it = game.getCharacterHand().handBegin(); it != game.getCharacterHand().handEnd(); it++) {
+		if (!(*it)->isChosen()) return false;
+	}
+	return true;
 }

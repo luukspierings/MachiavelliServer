@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "Player.h"
 #include "Game.h"
+#include "BuildingHand.h"
 
 class Mage : public Character {
 
@@ -19,7 +20,7 @@ public:
 
 private:
 
-	vector<unique_ptr<Building>> chosenSwaps{};
+	BuildingHand chosenSwaps;
 	bool choosingCards = false;
 
 	void printChoosingOptions(Game & game, Player & player);

@@ -18,19 +18,19 @@ void Condottiere::processState(Game & game, Player & player, string command)
 			auto &otherPlayer = game.otherPlayer(player);
 			int cardCount = 1;
 
-			for (auto it = otherPlayer.stackBuildingsBegin(); it != otherPlayer.stackBuildingsEnd(); it++) {
-				if (command == (*it)->getName() || command == to_string(cardCount)) {
+			for (auto it = otherPlayer.getBuiltBuildings().handBegin(); it != otherPlayer.getBuiltBuildings().handEnd(); it++) {
+				if (command == it->getName() || command == to_string(cardCount)) {
 
-					if (player.getCoins() < (*it)->getDestroyCost()) {
+					if (player.getCoins() < it->getDestroyCost()) {
 						player.notify("You don't have enough coins to destroy this building!");
 						player.notify();
 					}
 					else {
-						player.loseCoins((*it)->getDestroyCost());
+						player.loseCoins(it->getDestroyCost());
 
-						game.notifyAllPlayers(player.get_name() + " destroys " + otherPlayer.get_name() + "'s building: " + (*it)->getPrint());
+						game.notifyAllPlayers(player.get_name() + " destroys " + otherPlayer.get_name() + "'s building: " + it->getPrint());
 
-						game.returnBuilding(otherPlayer.destroyBuilding((*it)->getName()));
+						game.getBuildingDeck().discard(move(otherPlayer.getBuiltBuildings().handPull(it)));
 
 						performedCharacter = true;
 						choosingCards = false;
@@ -62,8 +62,8 @@ void Condottiere::printChoosingOptions(Game & game, Player & player)
 	auto &otherPlayer = game.otherPlayer(player);
 
 	int cardCount = 1;
-	for (auto it = otherPlayer.stackBuildingsBegin(); it != otherPlayer.stackBuildingsEnd(); it++) {
-		player.notify("[" + to_string(cardCount) + "] " + to_string((*it)->getDestroyCost()) + " coins | " + (*it)->getPrint());
+	for (auto it = otherPlayer.getBuiltBuildings().handBegin(); it != otherPlayer.getBuiltBuildings().handEnd(); it++) {
+		player.notify("[" + to_string(cardCount) + "] " + to_string(it->getDestroyCost()) + " coins | " + it->getPrint());
 		cardCount++;
 	}
 }

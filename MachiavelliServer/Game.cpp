@@ -85,33 +85,6 @@ Player & Game::otherPlayer(Player & player)
 	return player;
 }
 
-void Game::shuffleBuildings()
-{
-	std::shuffle(buildings.begin(), buildings.end(), std::default_random_engine{});
-	std::shuffle(buildings.begin(), buildings.end(), std::default_random_engine{});
-	std::shuffle(buildings.begin(), buildings.end(), std::default_random_engine{});
-}
-
-unique_ptr<Building> Game::getBuilding()
-{
-	unique_ptr<Building> buf;
-
-	if (buildings.begin() == buildings.end()) {
-		swap(buildings, returnedBuildings);
-		shuffleBuildings();
-	}
-	buf = move(buildings.back());
-	buildings.pop_back();
-
-	return buf;
-}
-
-void Game::returnBuilding(unique_ptr<Building> building)
-{
-	returnedBuildings.push_back(move(building));
-}
-
-
 void Game::showState()
 {
 	for (auto & client : clients) {
@@ -132,9 +105,10 @@ void Game::start()
 
 		player.earnCoins(2);
 		
-		player.putBuilding(move(getBuilding()));
-		player.putBuilding(move(getBuilding()));
-		player.putBuilding(move(getBuilding()));
+		player.getHandBuildings().push_top_stack(move(buildingDeck.draw()));
+		player.getHandBuildings().push_top_stack(move(buildingDeck.draw()));
+		player.getHandBuildings().push_top_stack(move(buildingDeck.draw()));
+		player.getHandBuildings().push_top_stack(move(buildingDeck.draw()));
 	}
 
 	int firstKing = RandomGenerator::getInstance().generate(0, static_cast<int>(clients.size())-1);
@@ -149,8 +123,16 @@ void Game::start()
 
 void Game::startRound()
 {
-	resetCharacters();
-	currentState = make_unique<ChooseCharacter>();
+	for (auto & client : clients) {
+		client->get_player().getCharacterHand().clearAll();
+	}
+	characterHand.merge_stacks(false);
+	characterHand.sortCharacters();
+
+	for (auto it = characterHand.handBegin(); it != characterHand.handEnd(); it++) {
+		(*it)->reset();
+	}
+	currentState = make_shared<ChooseCharacter>();
 
 	for (auto & client : clients) {
 		auto &player = client->get_player();
@@ -207,7 +189,7 @@ void Game::endRound()
 		if (mostPointsClients.size() == 1) {
 			auto &player = mostPointsClients[0]->get_player();
 			notifyAllPlayers("");
-			notifyAllPlayers(player.get_name() + " has " + to_string(player.stackBuildingsAmount()) + " buildings and wins!");
+			notifyAllPlayers(player.get_name() + " has " + to_string(player.getBuiltBuildings().handAmount()) + " buildings and wins!");
 		}
 		else {
 			mostPoints = 0;
@@ -230,7 +212,7 @@ void Game::endRound()
 			if (drawClients.size() == 1) {
 				auto &player = drawClients[0]->get_player();
 				notifyAllPlayers("");
-				notifyAllPlayers(player.get_name() + " has " + to_string(player.stackBuildingsAmount()) + " buildings and wins!");
+				notifyAllPlayers(player.get_name() + " has " + to_string(player.getBuiltBuildings().handAmount()) + " buildings and wins!");
 			}
 			else {
 				notifyAllPlayers("It's a draw!");
@@ -248,42 +230,32 @@ void Game::endRound()
 	}
 }
 
-void Game::callNextCharacter(string lastCharacter)
+void Game::callNextCharacter()
 {
 	for (auto & client : clients) {
 		if (client->get_player().isFinished() && !firstWon.lock()) {
 			firstWon = client;
 		}
 	}
-
-	string newCharacter = "";
-	if (lastCharacter == "") {
-		if (characterOrder.size() > 0) newCharacter = characterOrder[0];
-	}
-	else {
-		bool lastPassed = false;
-		for (auto character : characterOrder) {
-			if (lastPassed) {
-				newCharacter = character;
-				break;
-			}
-			else if (lastCharacter == character) lastPassed = true;
-		}
+	
+	if (currentState != nullptr && dynamic_cast<Character*>(currentState.get()) != nullptr) {
+		characterHand.discard(move(characterHand.draw()));
 	}
 
-	if (newCharacter != "") {
+	if (characterHand.handBegin() != characterHand.handEnd()) {
+
+		auto newCharacter = characterHand.top();
+		currentState = newCharacter;
 
 		for (auto & client : clients) {
-			if (client->get_player().hasCharacter(newCharacter)) {
+			if (client->get_player().hasCharacter(newCharacter.get())) {
 
 				auto &player = client->get_player();
 
-				notifyAllPlayers("The " + newCharacter + " is called forward: " + player.get_name() + " is stepping forward.");
+				notifyAllPlayers("The " + newCharacter->getName() + " is called forward: " + player.get_name() + " is stepping forward.");
 				player.notify();
 
-				auto newC = player.pullCharacter(newCharacter);
-				newC->startCharacter(*this, player);
-				currentState = move(newC);
+				newCharacter->startCharacter(*this, player);
 
 				player.setWaiting(false);
 				otherPlayer(player).setWaiting(true);
@@ -292,9 +264,9 @@ void Game::callNextCharacter(string lastCharacter)
 			}
 		}
 
-		notifyAllPlayers("The " + newCharacter + " is called forward: only silence returns.");
+		notifyAllPlayers("The " + newCharacter->getName() + " is called forward: only silence returns.");
 
-		callNextCharacter(newCharacter);
+		callNextCharacter();
 
 	}
 	else {
@@ -306,13 +278,3 @@ void Game::callNextCharacter(string lastCharacter)
 
 }
 
-void Game::resetCharacters()
-{
-	characters = characterFactory.getCharacters();
-
-	characterOrder.clear();
-	for (auto & c : characters) {
-		characterOrder.push_back(c->getName());
-	}
-
-}

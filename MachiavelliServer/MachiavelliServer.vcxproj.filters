@@ -111,12 +111,6 @@
     <ClInclude Include="Player.h">
       <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterFactory.h">
-      <Filter>Game\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildingFactory.h">
-      <Filter>Game\Factories</Filter>
-    </ClInclude>
     <ClInclude Include="Deck.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
@@ -133,6 +127,12 @@
       <Filter>Game\Decks</Filter>
     </ClInclude>
     <ClInclude Include="DeckFactory.h">
+      <Filter>Game\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingFactory.h">
+      <Filter>Game\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterFactory.h">
       <Filter>Game\Factories</Filter>
     </ClInclude>
   </ItemGroup>
@@ -200,12 +200,6 @@
     <ClCompile Include="Preacher.cpp">
       <Filter>Game\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterFactory.cpp">
-      <Filter>Game\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="BuildingFactory.cpp">
-      <Filter>Game\Factories</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterHand.cpp">
       <Filter>Game\Decks</Filter>
     </ClCompile>
@@ -213,6 +207,12 @@
       <Filter>Game\Decks</Filter>
     </ClCompile>
     <ClCompile Include="DeckFactory.cpp">
+      <Filter>Game\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingFactory.cpp">
+      <Filter>Game\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterFactory.cpp">
       <Filter>Game\Factories</Filter>
     </ClCompile>
   </ItemGroup>

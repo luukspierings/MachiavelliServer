@@ -15,6 +15,10 @@
 #include "Character.h"
 #include "Building.h"
 
+#include "BuildingHand.h"
+#include "CharacterHand.h"
+
+
 using namespace std;
 
 class Player {
@@ -38,13 +42,13 @@ public:
 	bool isKing() const { return king; }
 	void setKing(bool setKing) { king = setKing; }
 
-	bool hasCharacter(string characterName);
+	/*
 	void putCharacter(unique_ptr<Character> character);
 	unique_ptr<Character> pullCharacter(string characterName);
 
 	void putBuilding(unique_ptr<Building> building);
 	unique_ptr<Building> pullBuilding(string buildingName);
-	void buyBuilding(string buildingName);
+	
 	unique_ptr<Building> destroyBuilding(string buildingName);
 
 	auto charactersBegin() { return characters.begin(); }
@@ -52,19 +56,19 @@ public:
 
 	auto handBuildingsBegin() const { return handBuildings.begin(); }
 	auto handBuildingsEnd() const { return handBuildings.end(); }
-	int handBuildingsAmount() const { return handBuildings.size(); }
+	int handBuildingsAmount() const { return static_cast<int>(handBuildings.size()); }
 
 	auto stackBuildingsBegin() const { return stackBuildings.begin(); }
 	auto stackBuildingsEnd() const { return stackBuildings.end(); }
-	int stackBuildingsAmount() const { return stackBuildings.size(); }
+	int stackBuildingsAmount() const { return static_cast<int>(stackBuildings.size()); }*/
 
 	int getCoins() const { return coins; }
 	void earnCoins(int earning) { if (earning > 0) { coins += earning; } }
 	int stealCoins() { int c = coins; coins = 0; return c; }
 	void loseCoins(int losing) { if (losing > 0) { coins -= losing; } }
 
-	int countPoints() const;
-	int countBuildingPoints() const;
+	int countPoints();
+	int countBuildingPoints();
 
 	void resetRound();
 	void reset();
@@ -73,6 +77,13 @@ public:
 
 	bool isPreached() const { return preached; }
 	void preach() { preached = true; }
+
+	BuildingHand& getHandBuildings() { return handBuildings; };
+	BuildingHand& getBuiltBuildings() { return builtBuildings; };
+	void buyBuilding(string buildingName);
+	
+	CharacterHand& getCharacterHand() { return characters; };
+	bool hasCharacter(Character * character);
 
 private:
     string name;
@@ -83,9 +94,14 @@ private:
 	bool king;
 	bool preached;
 
-	vector<unique_ptr<Character>> characters;
+	BuildingHand handBuildings;
+	BuildingHand builtBuildings;
+
+	CharacterHand characters;
+
+	/*vector<unique_ptr<Character>> characters;
 	vector<unique_ptr<Building>> handBuildings;
-	vector<unique_ptr<Building>> stackBuildings;
+	vector<unique_ptr<Building>> stackBuildings;*/
 
 	bool waiting;
 

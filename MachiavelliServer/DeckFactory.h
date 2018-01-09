@@ -3,14 +3,15 @@
 #include <memory>
 
 class BuildingDeck;
+class CharacterHand;
 
 using namespace std;
 
 class DeckFactory {
 
-
 public:
-	unique_ptr<BuildingDeck> loadBuildingDeck();
+	void loadBuildingDeck(BuildingDeck& deck);
+	void loadCharacterHand(CharacterHand& hand);
 
 private:
 

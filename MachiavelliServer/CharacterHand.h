@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
+#include <memory>
 
 #include "Hand.h"
 #include "Deck.h"
@@ -13,7 +14,7 @@
 
 using namespace std;
 
-class CharacterHand: public Hand<Character> {
+class CharacterHand: public Hand<shared_ptr<Character>> {
 
 public:
 

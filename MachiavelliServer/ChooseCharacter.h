@@ -22,6 +22,7 @@ private:
 
 	bool choosingHand = true;
 
+	bool allCharactersChosen(Game& game, Player& player);
 
 };
 
