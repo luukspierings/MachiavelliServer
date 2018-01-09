@@ -126,6 +126,12 @@
     <ClInclude Include="BuildingDeck.h">
       <Filter>Game\Decks</Filter>
     </ClInclude>
+    <ClInclude Include="Hand.h">
+      <Filter>Game\Decks</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingHand.h">
+      <Filter>Game\Decks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MachiavelliServer.cpp">

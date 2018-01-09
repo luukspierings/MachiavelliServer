@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Deck.h"
+#include "Hand.h"
 #include "Character.h"
 
-class CharacterDeck: public Deck<Character> {
+class CharacterDeck: public Hand<Character> {
 
 public:
 

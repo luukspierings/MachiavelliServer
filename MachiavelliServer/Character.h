@@ -15,6 +15,7 @@ class Character : public State
 {
 public:
 	Character() {};
+	Character(int pOrder): order(pOrder) {};
 
 	virtual ~Character() = default;
 
@@ -34,6 +35,7 @@ public:
 
 protected:
 
+	int order = 0;
 	CardColor color = CardColor::NONE;
 	string name = "empty character";
 
