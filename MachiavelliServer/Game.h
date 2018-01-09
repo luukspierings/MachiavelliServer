@@ -8,8 +8,6 @@
 #include "Building.h"
 #include "Character.h"
 #include "State.h"
-#include "CharacterFactory.h"
-#include "BuildingFactory.h"
 #include "ClientInfo.h"
 #include "RandomGenerator.h"
 

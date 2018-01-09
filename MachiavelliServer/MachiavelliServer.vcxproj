@@ -150,11 +150,9 @@
     <ClInclude Include="Builder.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="BuildingDeck.h" />
-    <ClInclude Include="BuildingFactory.h" />
     <ClInclude Include="BuildingHand.h" />
     <ClInclude Include="CardColor.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="CharacterHand.h" />
     <ClInclude Include="ChooseCharacter.h" />
     <ClInclude Include="CircularBuffer.h" />
@@ -164,7 +162,6 @@
     <ClInclude Include="Condottiere.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="DeckFactory.h" />
-    <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="King.h" />
@@ -187,15 +184,12 @@
     <ClCompile Include="Builder.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="BuildingDeck.cpp" />
-    <ClCompile Include="BuildingFactory.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="CharacterFactory.cpp" />
     <ClCompile Include="CharacterHand.cpp" />
     <ClCompile Include="ChooseCharacter.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="Condottiere.cpp" />
     <ClCompile Include="DeckFactory.cpp" />
-    <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="MachiavelliServer.cpp" />

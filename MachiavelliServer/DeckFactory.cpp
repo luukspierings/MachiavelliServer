@@ -5,14 +5,28 @@
 
 void DeckFactory::loadBuildingDeck(BuildingDeck& deck)
 {
-	std::ifstream stream("Bouwkaarten.csv");
-	stream >> deck;
-	stream.close();
+	try
+	{
+		std::ifstream stream("Bouwkaarten.csv");
+		stream >> deck;
+		stream.close();
+	}
+	catch(...)
+	{
+		throw std::runtime_error(std::string("Error while loading Bouwkaarten.csv"));
+	}
 }
 
 void DeckFactory::loadCharacterHand(CharacterHand& hand)
 {
-	std::ifstream stream("karakterkaarten.csv");
-	stream >> hand;
-	stream.close();
+	try
+	{
+		std::ifstream stream("karakterkaarten.csv");
+		stream >> hand;
+		stream.close();
+	}
+	catch (...)
+	{
+		throw std::runtime_error(std::string("Error while loading karakterkaarten.csv"));
+	}
 }

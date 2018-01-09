@@ -96,9 +96,6 @@
     <ClInclude Include="Condottiere.h">
       <Filter>Game\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="FileHandler.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -127,12 +124,6 @@
       <Filter>Game\Decks</Filter>
     </ClInclude>
     <ClInclude Include="DeckFactory.h">
-      <Filter>Game\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildingFactory.h">
-      <Filter>Game\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterFactory.h">
       <Filter>Game\Factories</Filter>
     </ClInclude>
   </ItemGroup>
@@ -165,9 +156,6 @@
       <Filter>Server</Filter>
     </ClCompile>
     <ClCompile Include="RandomGenerator.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="FileHandler.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="ChooseCharacter.cpp">
@@ -207,12 +195,6 @@
       <Filter>Game\Decks</Filter>
     </ClCompile>
     <ClCompile Include="DeckFactory.cpp">
-      <Filter>Game\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="BuildingFactory.cpp">
-      <Filter>Game\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterFactory.cpp">
       <Filter>Game\Factories</Filter>
     </ClCompile>
   </ItemGroup>
