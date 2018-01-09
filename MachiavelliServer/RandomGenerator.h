@@ -27,7 +27,10 @@ public:
 
 	int generate(int min, int max);
 
-private:
+	std::default_random_engine getGenerator() const {
+		return generator;
+	};
+
 
 
 };

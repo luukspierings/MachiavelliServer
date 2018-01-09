@@ -19,6 +19,12 @@
     <Filter Include="Game\Other states">
       <UniqueIdentifier>{f92c2932-d744-47c8-a14d-0512eaca64a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Cards">
+      <UniqueIdentifier>{e78b2e03-011a-40fa-ae89-9f214d82bda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factories">
+      <UniqueIdentifier>{88e4b95d-56c5-4c18-b40f-56014e446d9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,12 +96,6 @@
     <ClInclude Include="Condottiere.h">
       <Filter>Game\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterFactory.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="BuildingFactory.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="FileHandler.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -110,6 +110,18 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterFactory.h">
+      <Filter>Game\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingFactory.h">
+      <Filter>Game\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Deck.h">
+      <Filter>Game\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Game\Cards</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -146,12 +158,6 @@
     <ClCompile Include="FileHandler.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterFactory.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="BuildingFactory.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="ChooseCharacter.cpp">
       <Filter>Game\Other states</Filter>
     </ClCompile>
@@ -181,6 +187,12 @@
     </ClCompile>
     <ClCompile Include="Preacher.cpp">
       <Filter>Game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterFactory.cpp">
+      <Filter>Game\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingFactory.cpp">
+      <Filter>Game\Factories</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

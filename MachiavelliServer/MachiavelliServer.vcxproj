@@ -150,6 +150,7 @@
     <ClInclude Include="Builder.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="BuildingFactory.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="CardColor.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterFactory.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="Condottiere.h" />
+    <ClInclude Include="Deck.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="King.h" />
